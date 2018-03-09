@@ -22,7 +22,7 @@
 
 #define stringOriginalFilename	"pongasoft_ABSwitch.vst3"
 #if PLATFORM_64
-#define stringFileDescription	"ABSwitch VST plugin by pongasoft (64Bit)"
+#define stringFileDescription	"A/B Switch VST plugin by pongasoft (64Bit)"
 #else
 #define stringFileDescription	"ABSwitch VST plugin by pongasoft"
 #endif
