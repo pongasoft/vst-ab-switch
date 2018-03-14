@@ -11,7 +11,7 @@ It is, at the moment, a work in progress but is being released early in connecti
 * the plugin compiles while depending on the SDK (following this other project [vst3-again-sample](https://github.com/pongasoft/vst3-again-sample))
 * the processing part is doing exactly what the [vst24-hello-world](https://github.com/pongasoft/vst24-hello-world) plugin is doing: simply removing 3dB by multiplying every sample by 0.5 (as a way to check that the processing part is being executed properly)
 * the controller part (UI) is a black square and by right clicking in it you can enter the inline UI editor that comes built-in with VSTGUI 4! (if compiled in `Debug` mode).
-* see [VST Development Notes (3.6.9) - Part 2](https://www.pongasoft.com/blog/yan/2018/03/14/VST-development-notes-part2/) for details
+* see [VST Development Notes (3.6.9) - Part 2](https://www.pongasoft.com/blog/yan/vst/2018/03/14/VST-development-notes-part2/) for details
 
 Configuration and requirements
 ------------------------------
