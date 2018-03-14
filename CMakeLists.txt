@@ -44,7 +44,6 @@ endif()
 
 set(target pongasoft_ABSwitch)
 smtg_add_vst3plugin(${target} ${VST3_SDK_ROOT} ${vst_sources})
-set_target_properties(${target} PROPERTIES ${SDK_IDE_MAIN_FOLDER})
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
 target_link_libraries(${target} PRIVATE base sdk vstgui_support)
 

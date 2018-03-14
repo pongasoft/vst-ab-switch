@@ -3,14 +3,15 @@ VST2/3 A/B Switch
 
 This project is a VST implementation of the [A/B Audio Switch](https://pongasoft.com/rack-extensions/ABSwitch.html) rack extension.
 
-It is, at the moment, a work in progress but is being released early in connection with the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/02/17/VST-development-notes) blog post series.
+It is, at the moment, a work in progress but is being released early in connection with the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
-2018-03-10 - Status for tag `blog-part2`
-----------------------------------------
+2018-03-13 - Status for tag `blog-part2-369`
+--------------------------------------------
+* the plugin uses SDK 3.6.9
 * the plugin compiles while depending on the SDK (following this other project [vst3-again-sample](https://github.com/pongasoft/vst3-again-sample))
 * the processing part is doing exactly what the [vst24-hello-world](https://github.com/pongasoft/vst24-hello-world) plugin is doing: simply removing 3dB by multiplying every sample by 0.5 (as a way to check that the processing part is being executed properly)
 * the controller part (UI) is a black square and by right clicking in it you can enter the inline UI editor that comes built-in with VSTGUI 4! (if compiled in `Debug` mode).
-* see [VST Development Notes - Part 2](https://www.pongasoft.com/blog/yan/vst/2018/03/10/VST-development-notes-part2/) for details
+* see [VST Development Notes (3.6.9) - Part 2](https://www.pongasoft.com/blog/yan/2018/03/14/VST-development-notes-part2/) for details
 
 Configuration and requirements
 ------------------------------
@@ -18,7 +19,7 @@ This project is known to work on macOS High Siera 10.13.3 with Xcode 9.2 install
 
 Downloading the SDK
 -------------------
-You need to download the VST3 SDK from [steinberg](https://www.steinberg.net/en/company/developers.html) (3.6.8 as of 2018/03/01 and what is used in this project).
+You need to download the VST3 SDK from [steinberg](https://download.steinberg.net/sdk_downloads/vstsdk369_01_03_2018_build_132.zip) (3.6.9 as of 2018/03/01 and what is used in this project) (shasum 256 => `7c6c2a5f0bcbf8a7a0d6a42b782f0d3c00ec8eafa4226bbf2f5554e8cd764964`).
 
 Installing the SDK
 -------------------
@@ -28,7 +29,7 @@ Configuring the SDK
 -------------------
 In order to build both VST2 and VST3 at the same time, you need to run the following commands
 
-    cd /Applications/VST_SDK.368/
+    cd /Applications/VST_SDK.369/
     ./copy_vst2_to_vst3_sdk.sh
 
 Building this project
@@ -41,7 +42,7 @@ Building this project
 
 - Generate the Makefile(s): `VST3_SDK_ROOT` needs to point to the root of the VST3 SDK (as installed/configured previously) and provide the path to the *source* of this project (which contains `CMakeLists.txt`):
 
-        cmake -DVST3_SDK_ROOT=/Applications/VST_SDK.368/VST3_SDK -DCMAKE_BUILD_TYPE=Debug /Volumes/Development/github/org.pongasoft/vst-ab-switch
+        cmake -DVST3_SDK_ROOT=/Applications/VST_SDK.369/VST3_SDK -DCMAKE_BUILD_TYPE=Debug /Volumes/Development/github/org.pongasoft/vst-ab-switch
 
 - Now build the plugin (all its dependencies will be built as well):
 
