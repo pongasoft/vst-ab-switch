@@ -9,6 +9,16 @@ using namespace Steinberg::Vst;
 namespace pongasoft {
 namespace VST {
 
+enum class ESwitchState {
+  kSwitchStateUnknown, kA, kB
+};
+
+template<typename T>
+inline ESwitchState ESwitchStateFromValue(T value)
+{
+  return value > 0 ? ESwitchState::kB : ESwitchState::kA;
+}
+
 class ABSwitchProcessor : public AudioEffect
 {
 public:
@@ -31,13 +41,27 @@ public:
   /** Asks if a given sample size is supported see \ref SymbolicSampleSizes. */
   tresult PLUGIN_API canProcessSampleSize (int32 symbolicSampleSize) override;
 
+  /** Restore the state (ex: after loading preset or project) */
+  tresult PLUGIN_API setState(IBStream *state) override;
+
+  /** Called to save the state (before saving a preset or project) */
+  tresult PLUGIN_API getState(IBStream *state) override;
+
   //--- ---------------------------------------------------------------------
   // create function required for Plug-in factory,
   // it will be called to create new instances of this Plug-in
   //--- ---------------------------------------------------------------------
   static FUnknown *createInstance(void * /*context*/) { return (IAudioProcessor *) new ABSwitchProcessor(); }
 
+
 protected:
+  /**
+   * Processes the parameters that have changed since the last call to process
+   *
+   * @param inputParameterChanges
+   */
+  void processParameters(IParameterChanges& inputParameterChanges);
+
   //==============================================================================
   template <typename SampleType>
   SampleType processAudio (SampleType** input,
@@ -45,6 +69,9 @@ protected:
                            int32 numChannels,
                            int32 sampleFrames,
                            float gain);
+
+private:
+  ESwitchState fSwitchState;
 };
 
 }

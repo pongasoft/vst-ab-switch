@@ -1,6 +1,7 @@
 #pragma once
 
 #include <pluginterfaces/base/funknown.h>
+#include <pluginterfaces/vst/vsttypes.h>
 
 namespace pongasoft {
 namespace VST {
@@ -10,6 +11,9 @@ namespace VST {
 static const ::Steinberg::FUID ABSwitchProcessorUID(0x8d605466, 0x25154967, 0x85ddbb25, 0x8ac01235);
 static const ::Steinberg::FUID ABSwitchControllerUID(0x82aea4a3, 0x5b4e4a5f, 0xa3d68b1a, 0x8a1b69c5);
 
+enum ABSwitchParamID : Steinberg::Vst::ParamID {
+  kAudioSwitch = 1000 // the toggle that switches between A and B input
+};
 //------------------------------------------------------------------------
 } // namespace VST
 } // namespace pongasoft

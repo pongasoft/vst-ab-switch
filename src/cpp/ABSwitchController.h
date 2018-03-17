@@ -24,7 +24,10 @@ public:
   tresult PLUGIN_API terminate() override;
 
   /** Create the view */
-  IPlugView* PLUGIN_API createView (const char* name) override;
+  IPlugView *PLUGIN_API createView(const char *name) override;
+
+  /** Sets the component state (after setting the processor) or after restore */
+  tresult PLUGIN_API setComponentState(IBStream *state) override;
 
   //--- ---------------------------------------------------------------------
   // create function required for Plug-in factory,
@@ -36,7 +39,7 @@ public:
   }
 
 private:
-  char const * const fXmlFile;
+  char const *const fXmlFile;
 };
 
 }
