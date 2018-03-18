@@ -4,6 +4,7 @@
 #include "ABSwitchProcessor.h"
 #include "ABSwitchProcess.h"
 #include "ABSwitchCIDs.h"
+#include "logging/loguru.hpp"
 
 namespace pongasoft {
 namespace VST {
@@ -11,12 +12,15 @@ namespace VST {
 ABSwitchProcessor::ABSwitchProcessor() : AudioEffect(), fSwitchState(ESwitchState::kA)
 {
   setControllerClass(ABSwitchControllerUID);
+  DLOG_F(INFO, "ABSwitchProcessor::ABSwitchProcessor()");
 }
 
 ABSwitchProcessor::~ABSwitchProcessor() = default;
 
 tresult PLUGIN_API ABSwitchProcessor::initialize(FUnknown *context)
 {
+  DLOG_F(INFO, "ABSwitchProcessor::initialize()");
+
   tresult result = AudioEffect::initialize(context);
   if(result != kResultOk)
   {
@@ -134,6 +138,7 @@ void ABSwitchProcessor::processParameters(IParameterChanges &inputParameterChang
         {
           case kAudioSwitch:
             fSwitchState = ESwitchStateFromValue(value);
+            DLOG_F(INFO, "ABSwitchProcessor::processParameters => fSwitchState=%i", fSwitchState);
             break;
 
           default:
@@ -154,6 +159,8 @@ tresult ABSwitchProcessor::setState(IBStream *state)
   if(state == nullptr)
     return kResultFalse;
 
+  DLOG_F(INFO, "ABSwitchProcessor::setState()");
+
   IBStreamer streamer(state, kLittleEndian);
 
   // ABSwitchParamID::kAudioSwitch
@@ -163,6 +170,8 @@ tresult ABSwitchProcessor::setState(IBStream *state)
 
   fSwitchState = ESwitchStateFromValue(savedParam1);
 
+  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%i", fSwitchState);
+
   return kResultOk;
 }
 
@@ -171,6 +180,11 @@ tresult ABSwitchProcessor::setState(IBStream *state)
 ///////////////////////////////////
 tresult ABSwitchProcessor::getState(IBStream *state)
 {
+  if(state == nullptr)
+    return kResultFalse;
+
+  DLOG_F(INFO, "ABSwitchProcessor::getState()");
+
   IBStreamer streamer(state, kLittleEndian);
   streamer.writeFloat(fSwitchState == ESwitchState::kA ? 0 : 1.0f);
   return kResultOk;

@@ -1,5 +1,6 @@
 #include <vstgui4/vstgui/plugin-bindings/vst3editor.h>
 #include <base/source/fstreamer.h>
+#include "logging/loguru.hpp"
 #include "ABSwitchController.h"
 #include "ABSwitchCIDs.h"
 
@@ -9,7 +10,7 @@ namespace VST {
 ABSwitchController::ABSwitchController() : EditController(),
   fXmlFile("ABSwitch.uidesc")
 {
-
+  DLOG_F(INFO, "ABSwitchController::ABSwitchController()");
 }
 
 /**
@@ -22,6 +23,8 @@ ABSwitchController::~ABSwitchController() = default;
  */
 tresult ABSwitchController::initialize(FUnknown *context)
 {
+  DLOG_F(INFO, "ABSwitchController::initialize()");
+
   tresult result = EditController::initialize(context);
   if(result != kResultOk)
   {
@@ -77,6 +80,8 @@ tresult ABSwitchController::setComponentState(IBStream *state)
   if(!streamer.readFloat(savedParam1))
     return kResultFalse;
   setParamNormalized(ABSwitchParamID::kAudioSwitch, savedParam1);
+
+  DLOG_F(INFO, "ABSwitchController::setComponentState => ABSwitchParamID::kAudioSwitch=%f", savedParam1);
 
   return kResultOk;
 }
