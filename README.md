@@ -5,6 +5,12 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 It is, at the moment, a work in progress but is being released early in connection with the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+2018-03-17 - Status for tag `blog-part3-369`
+--------------------------------------------
+* the plugin has a small UI with text and a switch to toggle between input A and B
+* the basic logic is working => toggling between A and B actually toggles which input is copied to the output
+* see [VST Development Notes (3.6.9) - Part 3](https://www.pongasoft.com/blog/yan/vst/2018/03/17/VST-development-notes-part3/) for details
+
 2018-03-13 - Status for tag `blog-part2-369`
 --------------------------------------------
 * the plugin uses SDK 3.6.9
