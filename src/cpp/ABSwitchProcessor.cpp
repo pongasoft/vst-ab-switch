@@ -9,14 +9,23 @@
 namespace pongasoft {
 namespace VST {
 
+///////////////////////////////////////////
+// ABSwitchProcessor::ABSwitchProcessor
+///////////////////////////////////////////
 ABSwitchProcessor::ABSwitchProcessor() : AudioEffect(), fSwitchState(ESwitchState::kA)
 {
   setControllerClass(ABSwitchControllerUID);
   DLOG_F(INFO, "ABSwitchProcessor::ABSwitchProcessor()");
 }
 
+///////////////////////////////////////////
+// ABSwitchProcessor::~ABSwitchProcessor
+///////////////////////////////////////////
 ABSwitchProcessor::~ABSwitchProcessor() = default;
 
+///////////////////////////////////////////
+// ABSwitchProcessor::initialize
+///////////////////////////////////////////
 tresult PLUGIN_API ABSwitchProcessor::initialize(FUnknown *context)
 {
   DLOG_F(INFO, "ABSwitchProcessor::initialize()");
@@ -35,19 +44,47 @@ tresult PLUGIN_API ABSwitchProcessor::initialize(FUnknown *context)
   return result;
 }
 
+///////////////////////////////////////////
+// ABSwitchProcessor::terminate
+///////////////////////////////////////////
 tresult PLUGIN_API ABSwitchProcessor::terminate()
 {
+  DLOG_F(INFO, "ABSwitchProcessor::terminate()");
+
   return AudioEffect::terminate();
 }
 
+///////////////////////////////////////////
+// ABSwitchProcessor::setupProcessing
+///////////////////////////////////////////
+tresult ABSwitchProcessor::setupProcessing(ProcessSetup &setup)
+{
+  tresult result = AudioEffect::setupProcessing(setup);
+
+  if(result != kResultOk)
+    return result;
+
+  DLOG_F(INFO, "ABSwitchProcessor::setupProcessing(processMode=%d, symbolicSampleSize=%d, maxSamplesPerBlock=%d, sampleRate=%f)",
+         setup.processMode,
+         setup.symbolicSampleSize,
+         setup.maxSamplesPerBlock,
+         setup.sampleRate);
+
+  return result;
+}
+
+///////////////////////////////////////////
+// ABSwitchProcessor::setActive
+///////////////////////////////////////////
 tresult PLUGIN_API ABSwitchProcessor::setActive(TBool state)
 {
+  DLOG_F(INFO, "ABSwitchProcessor::setActive(%s)", state ? "true" : "false");
   return AudioEffect::setActive(state);
 }
 
-/**
- * This is where the processing actually happens
- */
+///////////////////////////////////////////
+// ABSwitchProcessor::process
+///////////////////////////////////////////
 tresult PLUGIN_API ABSwitchProcessor::process(ProcessData &data)
 {
   // 1. process parameter changes
@@ -103,7 +140,11 @@ tresult PLUGIN_API ABSwitchProcessor::process(ProcessData &data)
   return kResultOk;
 }
 
-/** Overridden so that we can declare we support 64bits */
+///////////////////////////////////////////
+// ABSwitchProcessor::canProcessSampleSize
+//
+// * Overridden so that we can declare we support 64bits
+///////////////////////////////////////////
 tresult ABSwitchProcessor::canProcessSampleSize(int32 symbolicSampleSize)
 {
   if(symbolicSampleSize == kSample32)
@@ -170,7 +211,7 @@ tresult ABSwitchProcessor::setState(IBStream *state)
 
   fSwitchState = ESwitchStateFromValue(savedParam1);
 
-  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%i", fSwitchState);
+  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%s", fSwitchState == ESwitchState::kA ? "kA" : "kB");
 
   return kResultOk;
 }

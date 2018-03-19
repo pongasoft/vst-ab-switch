@@ -53,6 +53,8 @@ public:
   //--- ---------------------------------------------------------------------
   static FUnknown *createInstance(void * /*context*/) { return (IAudioProcessor *) new ABSwitchProcessor(); }
 
+  tresult setupProcessing(ProcessSetup &setup) override;
+
 
 protected:
   /**
