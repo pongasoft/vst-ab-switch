@@ -21,7 +21,11 @@ ABSwitchProcessor::ABSwitchProcessor() : AudioEffect(), fSwitchState(ESwitchStat
 ///////////////////////////////////////////
 // ABSwitchProcessor::~ABSwitchProcessor
 ///////////////////////////////////////////
-ABSwitchProcessor::~ABSwitchProcessor() = default;
+ABSwitchProcessor::~ABSwitchProcessor()
+{
+  DLOG_F(INFO, "ABSwitchProcessor::~ABSwitchProcessor()");
+}
+
 
 ///////////////////////////////////////////
 // ABSwitchProcessor::initialize

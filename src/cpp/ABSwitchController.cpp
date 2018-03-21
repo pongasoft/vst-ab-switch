@@ -7,20 +7,28 @@
 namespace pongasoft {
 namespace VST {
 
+///////////////////////////////////////////
+// ABSwitchController::ABSwitchController
+///////////////////////////////////////////
 ABSwitchController::ABSwitchController() : EditController(),
-  fXmlFile("ABSwitch.uidesc")
+  fXmlFile("ABSwitch.uidesc"),
+  fInputLabelA{"Input Label A"},
+  fInputLabelB{"Input Label B"}
 {
   DLOG_F(INFO, "ABSwitchController::ABSwitchController()");
 }
 
-/**
- * Nothing to do in destructor
- */
-ABSwitchController::~ABSwitchController() = default;
+///////////////////////////////////////////
+// ABSwitchController::~ABSwitchController
+///////////////////////////////////////////
+ABSwitchController::~ABSwitchController()
+{
+  DLOG_F(INFO, "ABSwitchController::~ABSwitchController()");
+}
 
-/**
- * Called to initialized the controller
- */
+///////////////////////////////////////////
+// ABSwitchController::initialize
+///////////////////////////////////////////
 tresult ABSwitchController::initialize(FUnknown *context)
 {
   DLOG_F(INFO, "ABSwitchController::initialize()");
@@ -44,17 +52,17 @@ tresult ABSwitchController::initialize(FUnknown *context)
   return result;
 }
 
-/**
- * Called to terminate the controller
- */
+///////////////////////////////////////////
+// ABSwitchController::terminate
+///////////////////////////////////////////
 tresult ABSwitchController::terminate()
 {
   return EditController::terminate();
 }
 
-/**
- * Creates the view attached to this controller
- */
+///////////////////////////////////////////
+// ABSwitchController::createView
+///////////////////////////////////////////
 IPlugView *ABSwitchController::createView(const char *name)
 {
   if(name && strcmp(name, ViewType::kEditor) == 0)
@@ -64,8 +72,41 @@ IPlugView *ABSwitchController::createView(const char *name)
   return nullptr;
 }
 
-/**
- * Sets the component state (after setting the processor) or after restore */
+///////////////////////////////////////////
+// ABSwitchController::verifyView
+///////////////////////////////////////////
+CView *ABSwitchController::verifyView(CView *view,
+                                      const UIAttributes &attributes,
+                                      const IUIDescription * /*description*/,
+                                      VST3Editor */*editor*/)
+{
+  DLOG_F(INFO, "ABSwitchController::verifyView()");
+
+  auto te = dynamic_cast<CTextEdit *>(view);
+  if(te != nullptr)
+  {
+    switch(te->getTag())
+    {
+      case kAudioInputLabelA:
+        fInputLabelA.assignTextEdit(te);
+        break;
+
+      case kAudioInputLabelB:
+        fInputLabelB.assignTextEdit(te);
+        break;
+
+      default:
+        // nothing to do in this case
+        break;
+    }
+  }
+
+  return view;
+}
+
+///////////////////////////////////////////
+// ABSwitchController::setComponentState
+///////////////////////////////////////////
 tresult ABSwitchController::setComponentState(IBStream *state)
 {
   // we receive the current state of the component (processor part)
@@ -85,6 +126,47 @@ tresult ABSwitchController::setComponentState(IBStream *state)
 
   return kResultOk;
 }
+
+///////////////////////////////////
+// ABSwitchController::setState
+///////////////////////////////////
+tresult ABSwitchController::setState(IBStream *state)
+{
+  if(state == nullptr)
+    return kResultFalse;
+
+  DLOG_F(INFO, "ABSwitchController::setState()");
+
+  IBStreamer streamer(state, kLittleEndian);
+
+  char8 str[128];
+  streamer.readString8(str, 128);
+  UTF8String utfStrA{str};
+  fInputLabelA.setText(utfStrA);
+
+  streamer.readString8(str, 128);
+  UTF8String utfStrB{str};
+  fInputLabelB.setText(utfStrB);
+
+  return kResultOk;
+}
+
+///////////////////////////////////
+// ABSwitchController::getState
+///////////////////////////////////
+tresult ABSwitchController::getState(IBStream *state)
+{
+  if(state == nullptr)
+    return kResultFalse;
+
+  DLOG_F(INFO, "ABSwitchController::getState()");
+
+  IBStreamer streamer(state, kLittleEndian);
+  streamer.writeString8(fInputLabelA.getText(), true);
+  streamer.writeString8(fInputLabelB.getText(), true);
+  return kResultOk;
+}
+
 
 }
 }

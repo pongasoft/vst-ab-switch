@@ -34,6 +34,8 @@ set(vst_sources
 		${CPP_SOURCES}/ABSwitchProcessor.h
 		${CPP_SOURCES}/ABSwitchProcessor.cpp
 		${CPP_SOURCES}/ABSwitchVST3.cpp
+		${CPP_SOURCES}/StringTextEdit.h
+		${CPP_SOURCES}/StringTextEdit.cpp
 		${CPP_SOURCES}/version.h
 		${CPP_SOURCES}/logging/loguru.hpp
 		${CPP_SOURCES}/logging/logging.cpp
