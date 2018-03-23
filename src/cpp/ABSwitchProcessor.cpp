@@ -23,7 +23,8 @@ inline int mapSwitchStateToInput(ESwitchState switchState)
 ABSwitchProcessor::ABSwitchProcessor() : AudioEffect(),
   fSwitchState{ESwitchState::kA},
   fPreviousSwitchState{fSwitchState},
-  fSoften{true}
+  fSoften{true},
+  fAudioOn{false}
 {
   setControllerClass(ABSwitchControllerUID);
   DLOG_F(INFO, "ABSwitchProcessor::ABSwitchProcessor()");
@@ -128,13 +129,49 @@ tresult ABSwitchProcessor::processInputs(ProcessData &data)
     return kResultOk;
   }
 
+  tresult res;
+
   // case when we are switching between A & B and soften is on => need to cross fade
   // also note that we need more than 1 input in order to cross fade...
   if(fPreviousSwitchState != fSwitchState && fSoften && data.numInputs > 1)
+    res = processCrossFade(data);
+  else
+    res = processCopy(data);
+
+
+  // handle Audio On/Off LED light
+  if(res == kResultOk)
   {
-    return processCrossFade(data);
+    AudioBusBuffers &stereoOutput = data.outputs[0];
+
+    bool audioOn = !Utils::isSilent(stereoOutput);
+
+    if(audioOn != fAudioOn)
+    {
+      fAudioOn = audioOn;
+
+      IParameterChanges* outParamChanges = data.outputParameterChanges;
+      if(outParamChanges != nullptr)
+      {
+        int32 index = 0;
+        auto paramQueue = outParamChanges->addParameterData(kAudioOn, index);
+        if(paramQueue != nullptr)
+        {
+          int32 index2 = 0;
+          paramQueue->addPoint(0, audioOn ? 1.0 : 0.0, index2);
+        }
+      }
+    }
   }
 
+  return res;
+}
+
+///////////////////////////////////////////
+// ABSwitchProcessor::processCopy
+///////////////////////////////////////////
+tresult ABSwitchProcessor::processCopy(ProcessData &data)
+{
   // there is at least 1 input (data.numInputs > 0 at this point)
   int inputIndex = 0;
 
@@ -145,40 +182,20 @@ tresult ABSwitchProcessor::processInputs(ProcessData &data)
   AudioBusBuffers &stereoInput = data.inputs[inputIndex];
   AudioBusBuffers &stereoOutput = data.outputs[0];
 
-  //---get audio buffers----------------
-  uint32 sampleFramesSize = getSampleFramesSizeInBytes(processSetup, data.numSamples);
-  void **in = getChannelBuffersPointer(processSetup, stereoInput);
-  void **out = getChannelBuffersPointer(processSetup, stereoOutput);
-
-  // since we copy input to output, we end up with the same flags
-  stereoOutput.silenceFlags = stereoInput.silenceFlags;
-
-  for(int i = 0; i < stereoInput.numChannels; ++i)
+  if(data.symbolicSampleSize == kSample32)
   {
-    // sanity check => we make sure there is enough output channels
-    if(stereoOutput.numChannels >= i)
-    {
-      // no need to copy if input and output are the same...
-      if(in[i] != out[i])
-      {
-        // simply copy the samples
-        memcpy(out[i], in[i], sampleFramesSize);
-      }
-    }
+    return Utils::copy<Sample32>(stereoInput,
+                                 stereoOutput,
+                                 data.numSamples);
   }
-
-  // in the event there are more output channels than input channels, we simply silence them
-  if(stereoOutput.numChannels > stereoInput.numChannels)
+  else
   {
-    for(int i = stereoInput.numChannels; i < stereoOutput.numChannels; ++i)
-    {
-      memset(out[i], 0, sampleFramesSize);
-      stereoOutput.silenceFlags |= static_cast<uint64>(1) << i;
-    }
+    return Utils::copy<Sample64>(stereoInput,
+                                 stereoOutput,
+                                 data.numSamples);
   }
-
-  return kResultOk;
 }
+
 
 ///////////////////////////////////////////
 // ABSwitchProcessor::processCrossFade
@@ -190,32 +207,20 @@ tresult ABSwitchProcessor::processCrossFade(ProcessData &data)
   AudioBusBuffers &stereoInput1 = data.inputs[mapSwitchStateToInput(fPreviousSwitchState)];
   AudioBusBuffers &stereoInput2 = data.inputs[mapSwitchStateToInput(fSwitchState)];
 
-  // should be the same but making sure since linearCrossFade assumes they are
-  int32 numChannels = std::min(std::min(stereoInput1.numChannels,
-                                        stereoInput2.numChannels),
-                               stereoOutput.numChannels);
-
-  uint64 silenceFlags;
-
   if(data.symbolicSampleSize == kSample32)
   {
-    silenceFlags = Utils::linearCrossFade<Sample32>(stereoInput1,
-                                                    stereoInput2,
-                                                    stereoOutput,
-                                                    numChannels,
-                                                    data.numSamples);
-  } else
-  {
-    silenceFlags = Utils::linearCrossFade<Sample64>(stereoInput1,
-                                                    stereoInput2,
-                                                    stereoOutput,
-                                                    numChannels,
-                                                    data.numSamples);
+    return Utils::linearCrossFade<Sample32>(stereoInput1,
+                                            stereoInput2,
+                                            stereoOutput,
+                                            data.numSamples);
   }
-
-  stereoOutput.silenceFlags = silenceFlags;
-
-  return kResultTrue;
+  else
+  {
+    return Utils::linearCrossFade<Sample64>(stereoInput1,
+                                            stereoInput2,
+                                            stereoOutput,
+                                            data.numSamples);
+  }
 }
 
 ///////////////////////////////////////////
@@ -312,7 +317,6 @@ tresult ABSwitchProcessor::getState(IBStream *state)
   streamer.writeFloat(fSwitchState == ESwitchState::kA ? 0 : 1.0f);
   return kResultOk;
 }
-
 
 }
 }

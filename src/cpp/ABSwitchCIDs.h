@@ -19,7 +19,8 @@ enum ABSwitchParamID : Steinberg::Vst::ParamID {
 
   // used in code
   kAudioSwitch = 1000, // the toggle that switches between A and B input
-  kSoftenSwitch = 1010 // turns soften (cross fade) on or off
+  kSoftenSwitch = 1010, // turns soften (cross fade) on or off
+  kAudioOn = 1020, // drives the LED that shows audio on/silence (computed in the processor)
 };
 //------------------------------------------------------------------------
 } // namespace VST

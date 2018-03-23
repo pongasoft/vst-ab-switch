@@ -41,23 +41,31 @@ tresult ABSwitchController::initialize(FUnknown *context)
 
   // the toggle that switches between A and B input
   parameters.addParameter(STR16 ("Audio Switch"), // title
-                          STR16 ("A/B"), // units
+                          nullptr, // units
                           1, // stepCount => 1 means toggle
                           0, // defaultNormalizedValue => we start with A (0)
                           Vst::ParameterInfo::kCanAutomate, // flags
                           ABSwitchParamID::kAudioSwitch, // tag
-                          0, // unitID => not using units at this stage
+                          kRootUnitId, // unitID => not using units at this stage
                           STR16 ("Switch")); // shortTitle
 
   // the toggle that enables/disables cross fading for softening the transition between A and B
   parameters.addParameter(STR16 ("Soften"), // title
-                          STR16 (""), // units
+                          nullptr, // units
                           1, // stepCount => 1 means toggle
                           1, // defaultNormalizedValue => soften on by default
                           Vst::ParameterInfo::kCanAutomate, // flags
                           ABSwitchParamID::kSoftenSwitch, // tag
-                          0, // unitID => not using units at this stage
+                          kRootUnitId, // unitID => not using units at this stage
                           STR16 ("Soft")); // shortTitle
+
+  // the LED light when there is sound or not
+  parameters.addParameter(STR16 ("Audio On"), // title
+                          nullptr, // units
+                          1, // stepCount => 1 means toggle
+                          0, // defaultNormalizedValue => we start with no sound => 0
+                          ParameterInfo::kIsReadOnly, // flags
+                          ABSwitchParamID::kAudioOn); // tag
 
   return result;
 }

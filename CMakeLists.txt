@@ -54,6 +54,8 @@ target_link_libraries(${target} PRIVATE base sdk vstgui_support)
 smtg_add_vst3_resource(${target} "resource/ABSwitch.uidesc")
 smtg_add_vst3_resource(${target} "resource/Control_AudioSwitch.png")
 smtg_add_vst3_resource(${target} "resource/Control_SoftenSwitch.png")
+smtg_add_vst3_resource(${target} "resource/Control_LEDLight_On0_Off1.png")
+smtg_add_vst3_resource(${target} "resource/Control_LEDLight_On1_Off0.png")
 
 if(MAC)
 	smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)

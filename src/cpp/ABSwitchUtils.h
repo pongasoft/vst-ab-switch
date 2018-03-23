@@ -28,6 +28,12 @@ inline bool isSilent(Sample64 value)
   return value <= Sample64SilentThreshold;
 }
 
+// returns true if the buffer is silent (meaning all channels are silent => set to 1)
+inline bool isSilent(AudioBusBuffers &buffer)
+{
+  return buffer.silenceFlags == (static_cast<uint64>(1) << buffer.numChannels) - 1;
+}
+
 /**
  * Use of template to retrieve the proper buffer
  */
@@ -44,20 +50,22 @@ inline Sample64** getBuffer(AudioBusBuffers &buffer) { return buffer.channelBuff
 
 /**
  * Cross fades between in1 and in2 in a linear fashion [in1 * (1-t) + in2 * t for 0 <= t <= 1]
- * @return the silence flags as defined by the VST SDK. a bit set to 0 means not silent
  */
 template<typename SampleType>
-uint64 linearCrossFade(AudioBusBuffers &audioBufferIn1,
-                       AudioBusBuffers &audioBufferIn2,
-                       AudioBusBuffers &audioBufferOut,
-                       int32 numChannels,
-                       int32 numSamples)
+tresult linearCrossFade(AudioBusBuffers &audioBufferIn1,
+                        AudioBusBuffers &audioBufferIn2,
+                        AudioBusBuffers &audioBufferOut,
+                        int32 numSamples)
 {
-  uint64 silenceFlags = 0;
+  audioBufferOut.silenceFlags = 0;
+
+  int32 numChannels = std::min(std::min(audioBufferIn1.numChannels,
+                                        audioBufferIn2.numChannels),
+                               audioBufferOut.numChannels);
 
   // making sure we don't divide by 0
   if(numSamples < 1)
-    return silenceFlags;
+    return kInvalidArgument;
 
   SampleType** in1 = getBuffer<SampleType>(audioBufferIn1);
   SampleType** in2 = getBuffer<SampleType>(audioBufferIn2);
@@ -86,16 +94,57 @@ uint64 linearCrossFade(AudioBusBuffers &audioBufferIn1,
       (*ptrOut++) = tmp;
       t += delta;
 
-      if(!isSilent(tmp))
+      if(silent && !isSilent(tmp))
         silent = false;
     }
 
     if(silent)
-      silenceFlags |= static_cast<uint64>(1) << i;
+      audioBufferOut.silenceFlags |= static_cast<uint64>(1) << i;
   }
 
-  return silenceFlags;
+  return kResultOk;
 }
+
+/**
+ * copy input buffer into output buffer (and sets the silence flag appropriately)
+ */
+template<typename SampleType>
+tresult copy(AudioBusBuffers &audioBufferIn,
+             AudioBusBuffers &audioBufferOut,
+             int32 numSamples)
+{
+  audioBufferOut.silenceFlags = 0;
+
+  int32 numChannels = std::min(audioBufferIn.numChannels, audioBufferOut.numChannels);
+
+  SampleType** in = getBuffer<SampleType>(audioBufferIn);
+  SampleType** out = getBuffer<SampleType>(audioBufferOut);
+
+  for(int32 i = 0; i < numChannels; i++)
+  {
+    int32 samples = numSamples;
+
+    auto ptrIn = in[i];
+    auto ptrOut = out[i];
+    bool silent = true;
+
+    while(--samples >= 0)
+    {
+      auto sample = *ptrIn++;
+
+      (*ptrOut++) = sample;
+
+      if(silent && !isSilent(sample))
+        silent = false;
+    }
+
+    if(silent)
+      audioBufferOut.silenceFlags |= static_cast<uint64>(1) << i;
+  }
+
+  return kResultOk;
+}
+
 
 }
 }

@@ -76,10 +76,16 @@ protected:
    */
   tresult processCrossFade(ProcessData &data);
 
+  /**
+   * Handles inputs when it is just a copy
+   */
+  tresult processCopy(ProcessData &data);
+
 private:
   ESwitchState fSwitchState;
   ESwitchState fPreviousSwitchState;
   bool fSoften;
+  bool fAudioOn;
 };
 
 }
