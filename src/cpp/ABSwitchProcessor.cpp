@@ -199,16 +199,16 @@ tresult ABSwitchProcessor::processCrossFade(ProcessData &data)
 
   if(data.symbolicSampleSize == kSample32)
   {
-    silenceFlags = Utils::linearCrossFade<Sample32>(stereoInput1.channelBuffers32,
-                                                    stereoInput2.channelBuffers32,
-                                                    stereoOutput.channelBuffers32,
+    silenceFlags = Utils::linearCrossFade<Sample32>(stereoInput1,
+                                                    stereoInput2,
+                                                    stereoOutput,
                                                     numChannels,
                                                     data.numSamples);
   } else
   {
-    silenceFlags = Utils::linearCrossFade<Sample64>(stereoInput1.channelBuffers64,
-                                                    stereoInput2.channelBuffers64,
-                                                    stereoOutput.channelBuffers64,
+    silenceFlags = Utils::linearCrossFade<Sample64>(stereoInput1,
+                                                    stereoInput2,
+                                                    stereoOutput,
                                                     numChannels,
                                                     data.numSamples);
   }
