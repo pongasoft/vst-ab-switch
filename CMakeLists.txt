@@ -30,9 +30,9 @@ set(vst_sources
 		${CPP_SOURCES}/ABSwitchCIDs.h
 		${CPP_SOURCES}/ABSwitchController.h
 		${CPP_SOURCES}/ABSwitchController.cpp
-		${CPP_SOURCES}/ABSwitchProcess.h
 		${CPP_SOURCES}/ABSwitchProcessor.h
 		${CPP_SOURCES}/ABSwitchProcessor.cpp
+		${CPP_SOURCES}/ABSwitchUtils.h
 		${CPP_SOURCES}/ABSwitchVST3.cpp
 		${CPP_SOURCES}/StringTextEdit.h
 		${CPP_SOURCES}/StringTextEdit.cpp
@@ -53,6 +53,7 @@ target_link_libraries(${target} PRIVATE base sdk vstgui_support)
 
 smtg_add_vst3_resource(${target} "resource/ABSwitch.uidesc")
 smtg_add_vst3_resource(${target} "resource/Control_AudioSwitch.png")
+smtg_add_vst3_resource(${target} "resource/Control_SoftenSwitch.png")
 
 if(MAC)
 	smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)

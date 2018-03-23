@@ -64,16 +64,22 @@ protected:
    */
   void processParameters(IParameterChanges& inputParameterChanges);
 
-  //==============================================================================
-  template <typename SampleType>
-  SampleType processAudio (SampleType** input,
-                           SampleType** output,
-                           int32 numChannels,
-                           int32 sampleFrames,
-                           float gain);
+  /**
+   * Processes inputs (step 2 always called after processing the parameters)
+   *
+   * @param inputParameterChanges
+   */
+  tresult processInputs(ProcessData &data);
+
+  /**
+   * Handles inputs when cross fade needs to happen
+   */
+  tresult processCrossFade(ProcessData &data);
 
 private:
   ESwitchState fSwitchState;
+  ESwitchState fPreviousSwitchState;
+  bool fSoften;
 };
 
 }

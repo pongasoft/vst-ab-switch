@@ -49,6 +49,16 @@ tresult ABSwitchController::initialize(FUnknown *context)
                           0, // unitID => not using units at this stage
                           STR16 ("Switch")); // shortTitle
 
+  // the toggle that enables/disables cross fading for softening the transition between A and B
+  parameters.addParameter(STR16 ("Soften"), // title
+                          STR16 (""), // units
+                          1, // stepCount => 1 means toggle
+                          1, // defaultNormalizedValue => soften on by default
+                          Vst::ParameterInfo::kCanAutomate, // flags
+                          ABSwitchParamID::kSoftenSwitch, // tag
+                          0, // unitID => not using units at this stage
+                          STR16 ("Soft")); // shortTitle
+
   return result;
 }
 
@@ -117,12 +127,20 @@ tresult ABSwitchController::setComponentState(IBStream *state)
   IBStreamer streamer(state, kLittleEndian);
 
   // ABSwitchParamID::kAudioSwitch
-  float savedParam1 = 0.f;
-  if(!streamer.readFloat(savedParam1))
+  float savedParamAudioSwitch = 0.f;
+  if(!streamer.readFloat(savedParamAudioSwitch))
     return kResultFalse;
-  setParamNormalized(ABSwitchParamID::kAudioSwitch, savedParam1);
+  setParamNormalized(ABSwitchParamID::kAudioSwitch, savedParamAudioSwitch);
 
-  DLOG_F(INFO, "ABSwitchController::setComponentState => ABSwitchParamID::kAudioSwitch=%f", savedParam1);
+  // ABSwitchParamID::kSoftenSwitch
+  float savedParamSoftenSwitch = 0.f;
+  if(!streamer.readFloat(savedParamSoftenSwitch))
+    return kResultFalse;
+  setParamNormalized(ABSwitchParamID::kSoftenSwitch, savedParamSoftenSwitch);
+
+  DLOG_F(INFO, "ABSwitchController::setComponentState => kAudioSwitch=%f, kSoftenSwitch=%f",
+         savedParamAudioSwitch,
+         savedParamSoftenSwitch);
 
   return kResultOk;
 }
