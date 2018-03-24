@@ -40,11 +40,11 @@ inline bool isSilent(AudioBusBuffers &buffer)
 template<typename SampleType>
 inline SampleType** getBuffer(AudioBusBuffers &buffer);
 
-// specialisation for Sample32
+// specialization for Sample32
 template<>
 inline Sample32** getBuffer(AudioBusBuffers &buffer) { return buffer.channelBuffers32; }
 
-// specialisation for Sample64
+// specialization for Sample64
 template<>
 inline Sample64** getBuffer(AudioBusBuffers &buffer) { return buffer.channelBuffers64; }
 

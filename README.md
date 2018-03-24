@@ -5,6 +5,12 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 It is, at the moment, a work in progress but is being released early in connection with the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+2018-03-24 - Status for tag `blog-part4-369`
+--------------------------------------------
+* the logic is fully implemented: switching between A & B, optional cross fading (soften feature), ability to name each input, LED audio on status light
+* no "pretty" UI
+* see [VST Development Notes (3.6.9) - Part 4](https://www.pongasoft.com/blog/yan/vst/2018/03/24/VST-development-notes-part4/) for details
+
 2018-03-17 - Status for tag `blog-part3-369`
 --------------------------------------------
 * the plugin has a small UI with text and a switch to toggle between input A and B
