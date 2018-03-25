@@ -1,5 +1,5 @@
-#ifndef VST_AB_SWITCH_STRINGTEXTEDITCONTROLLER_H
-#define VST_AB_SWITCH_STRINGTEXTEDITCONTROLLER_H
+#ifndef VST_AB_SWITCH_STRINGTEXTEDIT_H
+#define VST_AB_SWITCH_STRINGTEXTEDIT_H
 
 #include <vstgui4/vstgui/lib/iviewlistener.h>
 #include <vstgui4/vstgui/lib/controls/ctextedit.h>
@@ -10,11 +10,10 @@ namespace VST {
 using namespace VSTGUI;
 
 /**
- * The purpose of this controller is to handle a CTextEdit view where the string is a free form string not a number.
- * IViewListenerAdapter is a trivial implementation of IViewListener so that we only override what we need
- *
  * This class lives in the controller and will be assigned the view (CTextEdit) when the UI part of the plugin
- * is shown. In other words this class outlives the view (UI can be opened and closed).
+ * is shown. In other words this class outlives the view (UI can be opened and closed). Once the view is assigned,
+ * it gets initialized with the text (fText) and registers listeners to handle
+ * lifecycle (IViewListenerAdapter::viewWillDelete) and changes (IControlListener::valueChanged).
  */
 class StringTextEdit : VSTGUI::IControlListener, VSTGUI::IViewListenerAdapter
 {
@@ -43,4 +42,4 @@ private:
 }
 }
 
-#endif //VST_AB_SWITCH_STRINGTEXTEDITCONTROLLER_H
+#endif //VST_AB_SWITCH_STRINGTEXTEDIT_H
