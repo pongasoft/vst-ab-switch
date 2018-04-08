@@ -4,15 +4,14 @@
 	</fonts>
 	<colors>
 	</colors>
-	<template background-color="~ BlueCColor" background-color-draw-style="filled and stroked" class="CViewContainer" mouse-enabled="true" name="view" opacity="1" origin="0, 0" size="300, 300" transparent="false" wants-focus="false">
-		<view back-color="~ GreyCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="100, 20" round-rect-radius="6" shadow-color="~ BlackCColor" size="100, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="A/B Switch" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="Control_AudioSwitch" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="50, 120" size="50, 50" tooltip="Toggle A/B Input" transparent="false" wants-focus="true" wheel-inc-value="0.1"/>
-		<view back-color="~ GreyCColor" background-offset="0, 0" class="CTextEdit" control-tag="Param_AudioInputLabelA" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="130, 100" round-rect-radius="6" secure-style="false" shadow-color="~ RedCColor" size="100, 20" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Input Label A" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
-		<view back-color="~ GreyCColor" background-offset="0, 0" class="CTextEdit" control-tag="Param_AudioInputLabelB" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="130, 180" round-rect-radius="6" secure-style="false" shadow-color="~ RedCColor" size="100, 20" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Input Label B" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="Control_SoftenSwitch" class="COnOffButton" control-tag="Param_SoftenSwitch" default-value="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="30, 230" size="100, 50" transparent="false" wants-focus="true" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="Control_LEDLight_On0_Off1" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="false" opacity="1" origin="240, 80" size="50, 50" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="Control_LEDLight_On1_Off0" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="false" opacity="1" origin="240, 170" size="50, 50" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="Control_LEDLight_On1_Off0" class="COnOffButton" control-tag="Param_AudioOn" default-value="0.5" max-value="1" min-value="0" mouse-enabled="false" opacity="1" origin="0, 0" size="50, 50" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
+	<template background-color="~ BlueCColor" background-color-draw-style="filled and stroked" bitmap="Background" class="CViewContainer" mouse-enabled="true" name="view" opacity="1" origin="0, 0" size="754, 138" transparent="false" wants-focus="false">
+		<view background-offset="0, 0" bitmap="Control_AudioSwitch" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="239, 27" size="92, 100" tooltip="Toggle A/B Input" transparent="false" wants-focus="true" wheel-inc-value="0.1"/>
+		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextEdit" control-tag="Param_AudioInputLabelA" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ BlackCColor" frame-color="~ TransparentCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="407, 33" round-rect-radius="6" secure-style="false" shadow-color="~ TransparentCColor" size="140, 20" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Input Label A" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
+		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextEdit" control-tag="Param_AudioInputLabelB" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ BlackCColor" frame-color="~ TransparentCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="407, 86" round-rect-radius="6" secure-style="false" shadow-color="~ TransparentCColor" size="140, 20" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Input Label B" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
+		<view background-offset="0, 0" bitmap="Control_SoftenSwitch" class="COnOffButton" control-tag="Param_SoftenSwitch" default-value="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="590, 30" size="40, 26" transparent="false" wants-focus="true" wheel-inc-value="0.1"/>
+		<view background-offset="0, 0" bitmap="Control_LEDLight_On0_Off1" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="372, 31" size="22, 24" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
+		<view background-offset="0, 0" bitmap="Control_LEDLight_On1_Off0" class="COnOffButton" control-tag="Param_AudioSwitch" default-value="0" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="372, 84" size="22, 24" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
+		<view background-offset="0, 0" bitmap="Control_LEDLight_On1_Off0" class="COnOffButton" control-tag="Param_AudioOn" default-value="0" max-value="1" min-value="0" mouse-enabled="false" opacity="1" origin="209, 18" size="22, 24" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
 	</template>
 	<control-tags>
 		<control-tag name="Param_AudioInputLabelA" tag="500"/>
@@ -23,20 +22,26 @@
 	</control-tags>
 	<gradients/>
 	<bitmaps>
+		<bitmap name="Background" path="Background.png"/>
+		<bitmap name="Background_2x" path="Background_2x.png" scale-factor="2"/>
 		<bitmap name="Control_AudioSwitch" path="Control_AudioSwitch.png"/>
+		<bitmap name="Control_AudioSwitch_2x" path="Control_AudioSwitch_2x.png" scale-factor="2"/>
 		<bitmap name="Control_LEDLight_On0_Off1" path="Control_LEDLight_On0_Off1.png"/>
+		<bitmap name="Control_LEDLight_On0_Off1_2x" path="Control_LEDLight_On0_Off1_2x.png" scale-factor="2"/>
 		<bitmap name="Control_LEDLight_On1_Off0" path="Control_LEDLight_On1_Off0.png"/>
+		<bitmap name="Control_LEDLight_On1_Off0_2x" path="Control_LEDLight_On1_Off0_2x.png" scale-factor="2"/>
 		<bitmap name="Control_SoftenSwitch" path="Control_SoftenSwitch.png"/>
+		<bitmap name="Control_SoftenSwitch_2x" path="Control_SoftenSwitch_2x.png" scale-factor="2"/>
 	</bitmaps>
 	<custom>
 		<attributes name="FocusDrawing"/>
 		<attributes Path="/Volumes/Development/github/org.pongasoft/vst-ab-switch/resource/ABSwitch.uidesc" name="VST3Editor"/>
-		<attributes name="UIGridController"/>
+		<attributes Size="1, 1" name="UIGridController"/>
 		<attributes SelectedTemplate="view" name="UITemplateController"/>
-		<attributes EditViewScale="1" EditorSize="0, 0, 1214, 726" SplitViewSize_0_0="0.8156028368794325800195110787171870470047" SplitViewSize_0_1="0.1560283687943262442843206372344866394997" SplitViewSize_1_0="0.5092198581560283265901034610578790307045" SplitViewSize_1_1="0.48368794326241132397470323667221236974" SplitViewSize_2_0="0.6630971993410214038178196460648905485868" SplitViewSize_2_1="0.3327841845140032672745178388140629976988" TabSwitchValue="4" Version="1" name="UIEditController"/>
+		<attributes EditViewScale="1" EditorSize="0, 0, 1443, 903" SplitViewSize_0_0="0.7403628117913831907515032071387395262718" SplitViewSize_0_1="0.2369614512471655276559800995528348721564" SplitViewSize_1_0="0.5113378684807255991628949232108425348997" SplitViewSize_1_1="0.4829931972789115457445063839259091764688" SplitViewSize_2_0="0.7165627165627165284789157340128440409899" SplitViewSize_2_1="0.2799722799722799693178387769876280799508" TabSwitchValue="4" Version="1" name="UIEditController"/>
 		<attributes name="UIAttributesController"/>
 		<attributes SelectedRow="13" name="UIViewCreatorDataSource"/>
 		<attributes SelectedRow="2" name="UITagsDataSource"/>
-		<attributes SelectedRow="2" name="UIBitmapsDataSource"/>
+		<attributes SelectedRow="9" name="UIBitmapsDataSource"/>
 	</custom>
 </vstgui-ui-description>

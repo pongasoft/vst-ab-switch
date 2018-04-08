@@ -64,7 +64,7 @@ tresult linearCrossFade(AudioBusBuffers &audioBufferIn1,
                                audioBufferOut.numChannels);
 
   // making sure we don't divide by 0
-  if(numSamples < 1)
+  if(numSamples <= 1)
     return kInvalidArgument;
 
   SampleType** in1 = getBuffer<SampleType>(audioBufferIn1);
@@ -83,14 +83,13 @@ tresult linearCrossFade(AudioBusBuffers &audioBufferIn1,
 
     double t = 0;
 
-    SampleType tmp;
     while(--samples >= 0)
     {
       auto sample1 = *ptrIn1++;
       auto sample2 = *ptrIn2++;
 
       // cross fade
-      tmp = (sample1) * (1.0 - t) + (sample2) * t;
+      SampleType tmp = (sample1) * (1.0 - t) + (sample2) * t;
       (*ptrOut++) = tmp;
       t += delta;
 
