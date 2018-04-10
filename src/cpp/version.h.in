@@ -1,0 +1,17 @@
+#ifndef VST_AB_SWITCH_VERSION_H
+#define VST_AB_SWITCH_VERSION_H
+#pragma once
+
+// Version with build number
+#define FULL_VERSION_STR "@PLUGIN_VERSION@"
+
+#define stringOriginalFilename	"pongasoft_ABSwitch.vst3"
+#if PLATFORM_64
+#define stringFileDescription	"A/B Switch VST plugin by pongasoft (64Bit)"
+#else
+#define stringFileDescription	"ABSwitch VST plugin by pongasoft"
+#endif
+#define stringCompanyName		"pongasoft\0"
+#define stringLegalCopyright	"© 2018 pongasoft LLC"
+
+#endif //VST_AB_SWITCH_VERSION_H

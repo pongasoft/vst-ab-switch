@@ -6,6 +6,6 @@
 {
   return Steinberg::Vst::Vst2Wrapper::create(GetPluginFactory(),
                                              pongasoft::VST::ABSwitchProcessorUID,
-                                             'TBDx',
+                                             'jobi',
                                              audioMaster);
 }

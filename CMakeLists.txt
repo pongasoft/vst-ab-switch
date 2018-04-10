@@ -5,11 +5,16 @@ option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 
 set(VST3_SDK_ROOT "" CACHE PATH "Location of VST3 SDK")
 
+set(PLUGIN_VERSION 1.0.0)
+
 project(VST_AB_Switch)
 
 include(VST3_SDK.cmake)
 
 set(CPP_SOURCES src/cpp)
+
+configure_file(${CPP_SOURCES}/version.h.in ${CMAKE_BINARY_DIR}/generated/version.h)
+include_directories(${CMAKE_BINARY_DIR}/generated/)
 
 if (SMTG_CREATE_VST2_VERSION)
 	set(vst2_sources
@@ -36,7 +41,6 @@ set(vst_sources
 		${CPP_SOURCES}/ABSwitchVST3.cpp
 		${CPP_SOURCES}/StringTextEdit.h
 		${CPP_SOURCES}/StringTextEdit.cpp
-		${CPP_SOURCES}/version.h
 		${CPP_SOURCES}/logging/loguru.hpp
 		${CPP_SOURCES}/logging/logging.cpp
 		)
@@ -69,13 +73,46 @@ elseif(WIN)
 	target_sources(${target} PRIVATE resource/ABSwitch.rc)
 endif()
 
+###################################################
+# Create archive (.tgz)
+###################################################
+set(ARCHIVE_NAME ${target}-${PLUGIN_VERSION})
+set(ARCHIVE_PATH ${CMAKE_BINARY_DIR}/archive/${ARCHIVE_NAME})
+
+add_custom_command(OUTPUT ${ARCHIVE_PATH}
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${ARCHIVE_PATH}
+		)
+
+add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/ABSwitch.vst3
+		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/LICENSE.txt ${ARCHIVE_PATH}
+		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/archive/README.txt ${ARCHIVE_PATH}
+		DEPENDS ${target}
+		DEPENDS ${ARCHIVE_PATH}
+		WORKING_DIRECTORY archive
+		)
+
 if (SMTG_CREATE_VST2_VERSION)
 	message(STATUS "SMTG_CREATE_VST2_VERSION is set for ${target}. A VST 2 version of the plug-in will be created (just rename the generated file from .vst3 to .vst).")
 	if(MAC)
 		# fix missing VSTPluginMain symbol when also building VST 2 version
 		smtg_set_exported_symbols(${target} "${CMAKE_CURRENT_LIST_DIR}/mac/macexport_vst2.exp")
+		add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
+				COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/ABSwitch.vst
+				APPEND
+				)
 	endif()
 	if (WIN)
 		add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	endif()
 endif()
+
+add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
+		COMMAND ${CMAKE_COMMAND} -E tar cvfz ${target}-${PLUGIN_VERSION}.tgz ${ARCHIVE_PATH}
+		COMMAND ${CMAKE_COMMAND} -E remove_directory ${ARCHIVE_PATH}
+		APPEND
+		)
+
+add_custom_target(archive
+		DEPENDS ${ARCHIVE_PATH}.tgz
+		)

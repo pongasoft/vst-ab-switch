@@ -132,6 +132,10 @@ Building this project
 
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 
+Misc
+----
+This project uses [loguru](https://github.com/emilk/loguru) for logging (included under `src/cpp/logging`)
+
 Licensing
 ---------
 GPL version 3
