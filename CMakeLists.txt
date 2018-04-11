@@ -81,16 +81,18 @@ set(ARCHIVE_PATH ${CMAKE_BINARY_DIR}/archive/${ARCHIVE_NAME})
 
 add_custom_command(OUTPUT ${ARCHIVE_PATH}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${ARCHIVE_PATH}
-		)
-
-add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
-		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/ABSwitch.vst3
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/LICENSE.txt ${ARCHIVE_PATH}
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/archive/README.txt ${ARCHIVE_PATH}
-		DEPENDS ${target}
-		DEPENDS ${ARCHIVE_PATH}
-		WORKING_DIRECTORY archive
 		)
+
+if(MAC)
+	add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/macOS/ABSwitch.vst3
+			DEPENDS ${target}
+			DEPENDS ${ARCHIVE_PATH}
+			WORKING_DIRECTORY archive
+			)
+endif()
 
 if (SMTG_CREATE_VST2_VERSION)
 	message(STATUS "SMTG_CREATE_VST2_VERSION is set for ${target}. A VST 2 version of the plug-in will be created (just rename the generated file from .vst3 to .vst).")
@@ -98,7 +100,7 @@ if (SMTG_CREATE_VST2_VERSION)
 		# fix missing VSTPluginMain symbol when also building VST 2 version
 		smtg_set_exported_symbols(${target} "${CMAKE_CURRENT_LIST_DIR}/mac/macexport_vst2.exp")
 		add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
-				COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/ABSwitch.vst
+				COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/macOS/ABSwitch.vst
 				APPEND
 				)
 	endif()
