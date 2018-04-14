@@ -1,9 +1,15 @@
 VST2/3 A/B Switch
 =================
 
-This project is a VST implementation of the [A/B Audio Switch](https://pongasoft.com/rack-extensions/ABSwitch.html) rack extension.
+This project is a VST implementation of the [A/B Audio Switch](https://pongasoft.com/rack-extensions/ABSwitch.html) rack extension. You can check the [A/B Switch](https://pongasoft.com/vst/ABSwitch.html) documentation directly.
 
-It is, at the moment, a work in progress but is being released early in connection with the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
+This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
+
+2018-04-14 - Status for tag `v1.0.0`
+------------------------------------
+* the logic is fully implemented: switching between A & B, optional cross fading (soften feature), ability to name each input, LED audio on status light
+* the UI is now similar to the rack extension UI
+* see [A/B Switch](https://pongasoft.com/vst/ABSwitch.html) documentation
 
 2018-03-24 - Status for tag `blog-part4-369`
 --------------------------------------------
@@ -35,7 +41,7 @@ You need to download the VST3 SDK from [steinberg](https://download.steinberg.ne
 
 Installing the SDK
 -------------------
-Unpack the SDK to a location of your choice (in my case the SDK is unpacked and renamed `/Applications/VST_SDK.368/`).
+Unpack the SDK to a location of your choice (in my case the SDK is unpacked and renamed `/Applications/VST_SDK.369/`).
 
 Configuring the SDK
 -------------------
@@ -131,6 +137,10 @@ Building this project
             cp -r VST3/pongasoft_ABSwitch.vst3 ~/Library/Audio/Plug-Ins/VST3
 
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
+
+Building the archive (.tgz)
+---------------------------
+A convenient script (for macOS) will invoke the proper commands to build and tar the entire project for production release: `build-prod.sh`. This can be run in any directory and will create a `build` folder.
 
 Misc
 ----
