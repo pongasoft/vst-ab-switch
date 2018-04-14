@@ -13,4 +13,4 @@ For VST3, copy macOS/ABSwitch.vst3 either under
 
 Usage
 =====
-Check the documentation at https://pongasoft.com/rack-extensions/ABSwitch.html
+Check the documentation at https://pongasoft.com/vst/ABSwitch.html
