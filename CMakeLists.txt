@@ -114,7 +114,7 @@ add_custom_command(OUTPUT ${ARCHIVE_PATH}
 
 if(MAC)
 	add_custom_command(OUTPUT ${ARCHIVE_PATH}.zip
-			COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE:${target}> ${ARCHIVE_PATH}/ABSwitch.vst3
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${VST3_OUTPUT_DIR}/${target}.${VST3_EXTENSION} ${ARCHIVE_PATH}/ABSwitch.vst3
 			DEPENDS ${target}
 			DEPENDS ${ARCHIVE_PATH}
 			WORKING_DIRECTORY archive
