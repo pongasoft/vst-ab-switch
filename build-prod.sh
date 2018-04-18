@@ -12,9 +12,9 @@ BASEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 mkdir -p build/Release
 cd build/Release
 
-if [ -z "${VST3_SDK_ROOT}" ]; then
-  VST3_SDK_ROOT="/Applications/VST_SDK.369/VST3_SDK"
+if [ -n "${VST3_SDK_ROOT}" ]; then
+  DVST3_SDK_ROOT="-DVST3_SDK_ROOT=${VST3_SDK_ROOT}"
 fi
 
-cmake -DVST3_SDK_ROOT=${VST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
+cmake ${DVST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
 cmake --build . --target archive

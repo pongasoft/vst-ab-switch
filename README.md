@@ -5,6 +5,10 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+2018-04-18 - Status for tag `v1.1.0`
+------------------------------------
+* Now builds on Windows as well
+
 2018-04-14 - Status for tag `v1.0.0`
 ------------------------------------
 * the logic is fully implemented: switching between A & B, optional cross fading (soften feature), ability to name each input, LED audio on status light
@@ -33,7 +37,7 @@ This project is connected to the [VST Development Notes](https://www.pongasoft.c
 
 Configuration and requirements
 ------------------------------
-This project is known to work on macOS High Siera 10.13.3 with Xcode 9.2 installed. It requires `cmake` version 3.9 at the minimum. Because it uses `cmake` it should work on other platforms but it has not been tested.
+This project is known to work on macOS High Siera 10.13.3 with Xcode 9.2 installed. It also has been tested on Windows 10 64 bits and Visual Studio Build tools (2017). It requires `cmake` version 3.9 at the minimum. Because it uses `cmake` it should work on other platforms but it has not been tested.
 
 Downloading the SDK
 -------------------
@@ -41,26 +45,36 @@ You need to download the VST3 SDK from [steinberg](https://download.steinberg.ne
 
 Installing the SDK
 -------------------
-Unpack the SDK to a location of your choice (in my case the SDK is unpacked and renamed `/Applications/VST_SDK.369/`).
+Unpack the SDK to the following location (note how I renamed it with the versio number)
+
+* `/Users/Shared/Steinberg/VST_SDK.369` for macOS
+* `C:\Users\Public\Documents\Steinberg\VST_SDK.369` for windows.
+
+You can also store in a different location and use the `VST3_SDK_ROOT` variable when using cmake to define its location.
 
 Configuring the SDK
 -------------------
 In order to build both VST2 and VST3 at the same time, you need to run the following commands
 
-    cd /Applications/VST_SDK.369/
+    # for macOS
+    cd /Users/Shared/Steinberg/VST_SDK.369
     ./copy_vst2_to_vst3_sdk.sh
 
-Building this project
----------------------
+    # for Windows
+    cd C:\Users\Public\Documents\Steinberg\VST_SDK.369
+    copy_vst2_to_vst3_sdk.bat
 
-- Create a folder *outside* the source tree and `cd` to it:
+Building this project for macOS
+-------------------------------
 
-        mkdir -p /tmp/vst-ab-switch-build/Debug
-        cd /tmp/vst-ab-switch-build/Debug
+- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
 
-- Generate the Makefile(s): `VST3_SDK_ROOT` needs to point to the root of the VST3 SDK (as installed/configured previously) and provide the path to the *source* of this project (which contains `CMakeLists.txt`):
+        mkdir -p build/Debug
+        cd build/Debug
 
-        cmake -DVST3_SDK_ROOT=/Applications/VST_SDK.369/VST3_SDK -DCMAKE_BUILD_TYPE=Debug /Volumes/Development/github/org.pongasoft/vst-ab-switch
+- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
+
+        cmake -DCMAKE_BUILD_TYPE=Debug ../
 
 - Now build the plugin (all its dependencies will be built as well):
 
@@ -138,9 +152,26 @@ Building this project
 
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 
-Building the archive (.tgz)
+Building this project for Windows
+---------------------------------
+- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
+
+      mkdir build
+      cd build
+
+- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
+
+      cmake -G"Visual Studio 15 2017 Win64" ../
+
+- Now build the plugin (all its dependencies will be built as well) (note that unlike macOS the type of build is specified during the build not during the generation of the project):
+
+      cmake --build . --config Release
+
+Note that the validator will automatically run at the end of the build.
+
+Building the archive (.zip)
 ---------------------------
-A convenient script (for macOS) will invoke the proper commands to build and tar the entire project for production release: `build-prod.sh`. This can be run in any directory and will create a `build` folder.
+A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder.
 
 Misc
 ----
