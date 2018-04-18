@@ -1,14 +1,26 @@
 #include <windows.h>
-#include "../source/version.h"
+#include "version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
+
+ABSwitch.uidesc                 DATA  "ABSwitch.uidesc"
+Background.png		            PNG  "Background.png"
+Background_2x.png		        PNG  "Background_2x.png"
+Control_AudioSwitch.png		    PNG  "Control_AudioSwitch.png"
+Control_AudioSwitch_2x.png		PNG  "Control_AudioSwitch_2x.png"
+Control_SoftenSwitch.png		PNG  "Control_SoftenSwitch.png"
+Control_SoftenSwitch_2x.png		PNG  "Control_SoftenSwitch_2x.png"
+Control_LEDLight_On_2x.png		PNG  "Control_LEDLight_On_2x.png"
+Control_LEDLight_On.png		    PNG  "Control_LEDLight_On.png"
+Control_LEDLight_Off_2x.png		PNG  "Control_LEDLight_Off_2x.png"
+Control_LEDLight_Off.png		PNG  "Control_LEDLight_Off.png"
 
 /////////////////////////////////////////////////////////////////////////////
 // Version
 /////////////////////////////////////////////////////////////////////////////
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
- PRODUCTVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
+ FILEVERSION MAJOR_VERSION_INT,MINOR_VERSION_INT,PATCH_NUMBER_INT
+ PRODUCTVERSION MAJOR_VERSION_INT,MINOR_VERSION_INT,PATCH_NUMBER_INT
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -31,7 +43,6 @@ BEGIN
             VALUE "ProductName",      stringFileDescription"\0"
             VALUE "CompanyName",      stringCompanyName"\0"
             VALUE "LegalCopyright",   stringLegalCopyright"\0"
-            VALUE "LegalTrademarks",  stringLegalTrademarks"\0"
             //VALUE "PrivateBuild",     " \0"
             //VALUE "SpecialBuild",     " \0"
             //VALUE "Comments",         " \0"

@@ -3,9 +3,30 @@ cmake_minimum_required (VERSION 3.9)
 # build VST 2 by default
 option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 
-set(VST3_SDK_ROOT "" CACHE PATH "Location of VST3 SDK")
+#-------------------------------------------------------------------------------
+# Platform Detection
+#-------------------------------------------------------------------------------
 
-set(PLUGIN_VERSION 1.0.0)
+if(APPLE)
+    set(MAC TRUE)
+elseif(WIN32)
+    set(WIN TRUE)
+elseif(UNIX)
+    set(LINUX TRUE)
+endif()
+
+if(MAC)
+  set(VST3_SDK_ROOT "/Users/Shared/Steinberg/VST_SDK.369/VST3_SDK" CACHE PATH "Location of VST3 SDK")
+elseif(WIN)
+  set(VST3_SDK_ROOT "C:/Users/Public/Documents/Steinberg/VST_SDK.369/VST3_SDK" CACHE PATH "Location of VST3 SDK")
+else()
+  set(VST3_SDK_ROOT "" CACHE PATH "Location of VST3 SDK")
+endif()
+
+set(PLUGIN_MAJOR_VERSION 1)
+set(PLUGIN_MINOR_VERSION 1)
+set(PLUGIN_PATCH_VERSION 0)
+set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project(VST_AB_Switch)
 
@@ -76,18 +97,31 @@ endif()
 ###################################################
 # Create archive (.tgz)
 ###################################################
-set(ARCHIVE_NAME ${target}-${PLUGIN_VERSION})
+if(MAC)
+	set(ARCHITECTURE "macOS_64bits")
+elseif(WIN)
+	set(ARCHITECTURE "win_64bits")
+endif()
+
+set(ARCHIVE_NAME ${target}-${ARCHITECTURE}-${PLUGIN_VERSION})
 set(ARCHIVE_PATH ${CMAKE_BINARY_DIR}/archive/${ARCHIVE_NAME})
 
 add_custom_command(OUTPUT ${ARCHIVE_PATH}
 		COMMAND ${CMAKE_COMMAND} -E make_directory ${ARCHIVE_PATH}
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/LICENSE.txt ${ARCHIVE_PATH}
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/archive/README.txt ${ARCHIVE_PATH}
+		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/archive/README-${ARCHITECTURE}.txt ${ARCHIVE_PATH}/README.txt
 		)
 
 if(MAC)
-	add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
-			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/macOS/ABSwitch.vst3
+	add_custom_command(OUTPUT ${ARCHIVE_PATH}.zip
+			COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE:${target}> ${ARCHIVE_PATH}/ABSwitch.vst3
+			DEPENDS ${target}
+			DEPENDS ${ARCHIVE_PATH}
+			WORKING_DIRECTORY archive
+			)
+elseif(WIN)
+	add_custom_command(OUTPUT ${ARCHIVE_PATH}.zip
+			COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target}> ${ARCHIVE_PATH}/ABSwitch.vst3
 			DEPENDS ${target}
 			DEPENDS ${ARCHIVE_PATH}
 			WORKING_DIRECTORY archive
@@ -99,22 +133,20 @@ if (SMTG_CREATE_VST2_VERSION)
 	if(MAC)
 		# fix missing VSTPluginMain symbol when also building VST 2 version
 		smtg_set_exported_symbols(${target} "${CMAKE_CURRENT_LIST_DIR}/mac/macexport_vst2.exp")
-		add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
-				COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/VST3/${target}.vst3 ${ARCHIVE_PATH}/macOS/ABSwitch.vst
-				APPEND
-				)
 	endif()
 	if (WIN)
 		add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	endif()
 endif()
 
-add_custom_command(OUTPUT ${ARCHIVE_PATH}.tgz
-		COMMAND ${CMAKE_COMMAND} -E tar cvfz ${target}-${PLUGIN_VERSION}.tgz ${ARCHIVE_PATH}
-		COMMAND ${CMAKE_COMMAND} -E remove_directory ${ARCHIVE_PATH}
-		APPEND
-		)
+if(MAC OR WIN)
+	add_custom_command(OUTPUT ${ARCHIVE_PATH}.zip
+			COMMAND ${CMAKE_COMMAND} -E tar cvf ${ARCHIVE_NAME}.zip --format=zip ${ARCHIVE_PATH}
+			COMMAND ${CMAKE_COMMAND} -E remove_directory ${ARCHIVE_PATH}
+			APPEND
+			)
 
 add_custom_target(archive
-		DEPENDS ${ARCHIVE_PATH}.tgz
+		DEPENDS ${ARCHIVE_PATH}.zip
 		)
+endif()
