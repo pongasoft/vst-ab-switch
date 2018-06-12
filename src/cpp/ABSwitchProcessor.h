@@ -2,6 +2,7 @@
 #define VST_AB_SWITCH_ABSWITCHPROCESSOR_H
 
 #include <public.sdk/source/vst/vstaudioeffect.h>
+#include <atomic>
 
 using namespace Steinberg;
 using namespace Steinberg::Vst;
