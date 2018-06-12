@@ -21,10 +21,11 @@ inline int mapSwitchStateToInput(ESwitchState switchState)
 // ABSwitchProcessor::ABSwitchProcessor
 ///////////////////////////////////////////
 ABSwitchProcessor::ABSwitchProcessor() : AudioEffect(),
-  fSwitchState{ESwitchState::kA},
-  fPreviousSwitchState{fSwitchState},
-  fSoften{true},
-  fAudioOn{false}
+                                         fState{ESwitchState::kA, true},
+                                         fPreviousState{fState},
+                                         fAudioOn{false},
+                                         fStateUpdate{},
+                                         fLatestState{fState}
 {
   setControllerClass(ABSwitchControllerUID);
   DLOG_F(INFO, "ABSwitchProcessor::ABSwitchProcessor()");
@@ -112,7 +113,7 @@ tresult PLUGIN_API ABSwitchProcessor::process(ProcessData &data)
   tresult res = processInputs(data);
 
   // 3. update the state
-  fPreviousSwitchState = fSwitchState;
+  fPreviousState = fState;
 
   return res;
 }
@@ -131,9 +132,11 @@ tresult ABSwitchProcessor::processInputs(ProcessData &data)
 
   tresult res;
 
+  fStateUpdate.pop(fState);
+
   // case when we are switching between A & B and soften is on => need to cross fade
   // also note that we need more than 1 input in order to cross fade...
-  if(fPreviousSwitchState != fSwitchState && fSoften && data.numInputs > 1)
+  if(fPreviousState.fSwitchState != fState.fSwitchState && fState.fSoften && data.numInputs > 1)
     res = processCrossFade(data);
   else
     res = processCopy(data);
@@ -177,7 +180,7 @@ tresult ABSwitchProcessor::processCopy(ProcessData &data)
 
   // this is where the "magic" happens => determines which input we use (A or B)
   if(data.numInputs > 1)
-    inputIndex = mapSwitchStateToInput(fSwitchState);
+    inputIndex = mapSwitchStateToInput(fState.fSwitchState);
 
   AudioBusBuffers &stereoInput = data.inputs[inputIndex];
   AudioBusBuffers &stereoOutput = data.outputs[0];
@@ -204,8 +207,8 @@ tresult ABSwitchProcessor::processCrossFade(ProcessData &data)
 {
   AudioBusBuffers &stereoOutput = data.outputs[0];
 
-  AudioBusBuffers &stereoInput1 = data.inputs[mapSwitchStateToInput(fPreviousSwitchState)];
-  AudioBusBuffers &stereoInput2 = data.inputs[mapSwitchStateToInput(fSwitchState)];
+  AudioBusBuffers &stereoInput1 = data.inputs[mapSwitchStateToInput(fPreviousState.fSwitchState)];
+  AudioBusBuffers &stereoInput2 = data.inputs[mapSwitchStateToInput(fState.fSwitchState)];
 
   if(data.symbolicSampleSize == kSample32)
   {
@@ -255,19 +258,21 @@ void ABSwitchProcessor::processParameters(IParameterChanges &inputParameterChang
       int32 sampleOffset;
       int32 numPoints = paramQueue->getPointCount();
 
+      State newSate{fState};
+
       // we read the "last" point (ignoring multiple changes for now)
       if(paramQueue->getPoint(numPoints - 1, sampleOffset, value) == kResultOk)
       {
         switch(paramQueue->getParameterId())
         {
           case kAudioSwitch:
-            fSwitchState = ESwitchStateFromValue(value);
-            DLOG_F(INFO, "ABSwitchProcessor::processParameters => fSwitchState=%i", fSwitchState);
+            newSate.fSwitchState = ESwitchStateFromValue(value);
+            DLOG_F(INFO, "ABSwitchProcessor::processParameters => fSwitchState=%i", newSate.fSwitchState);
             break;
 
           case kSoftenSwitch:
-            fSoften = value == 1.0;
-            DLOG_F(INFO, "ABSwitchProcessor::processParameters => fSoften=%s", fSoften ? "true" : "false");
+            newSate.fSoften = value == 1.0;
+            DLOG_F(INFO, "ABSwitchProcessor::processParameters => fSoften=%s", newSate.fSoften ? "true" : "false");
             break;
 
           default:
@@ -275,6 +280,9 @@ void ABSwitchProcessor::processParameters(IParameterChanges &inputParameterChang
             break;
         }
       }
+
+      fState = newSate;
+      fLatestState.set(newSate);
     }
   }
 }
@@ -291,17 +299,21 @@ tresult ABSwitchProcessor::setState(IBStream *state)
 
   IBStreamer streamer(state, kLittleEndian);
 
+  State newState{};
+
   // ABSwitchParamID::kAudioSwitch
   float savedParam1 = 0.f;
   streamer.readFloat(savedParam1); // ignoring if it didn't work => will be set to 0
-  fSwitchState = ESwitchStateFromValue(savedParam1);
+  newState.fSwitchState = ESwitchStateFromValue(savedParam1);
 
   // ABSwitchParamID::kSoftenSwitch
   bool savedParam2 = true;
   streamer.readBool(savedParam2); // ignoring if it exists => will be set to true
-  fSoften = savedParam2;
+  newState.fSoften = savedParam2;
 
-  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%s, fSoften=%s", fSwitchState == ESwitchState::kA ? "kA" : "kB", fSoften ? "true" : "false");
+  fStateUpdate.push(newState);
+
+  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%s, fSoften=%s", newState.fSwitchState == ESwitchState::kA ? "kA" : "kB", newState.fSoften ? "true" : "false");
 
   return kResultOk;
 }
@@ -316,9 +328,10 @@ tresult ABSwitchProcessor::getState(IBStream *state)
 
   DLOG_F(INFO, "ABSwitchProcessor::getState()");
 
+  auto latestState = fLatestState.get();
   IBStreamer streamer(state, kLittleEndian);
-  streamer.writeFloat(fSwitchState == ESwitchState::kA ? 0 : 1.0f);
-  streamer.writeBool(fSoften);
+  streamer.writeFloat(latestState.fSwitchState == ESwitchState::kA ? 0 : 1.0f);
+  streamer.writeBool(latestState.fSoften);
   return kResultOk;
 }
 
