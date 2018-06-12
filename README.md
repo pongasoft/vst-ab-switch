@@ -5,7 +5,7 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
-2018-04-18 - Status for tag `v1.1.1`
+2018-06-12 - Status for tag `v1.1.1`
 ------------------------------------
 * fixed soften status not being saved
 
