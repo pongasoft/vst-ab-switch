@@ -293,12 +293,15 @@ tresult ABSwitchProcessor::setState(IBStream *state)
 
   // ABSwitchParamID::kAudioSwitch
   float savedParam1 = 0.f;
-  if(!streamer.readFloat(savedParam1))
-    return kResultFalse;
-
+  streamer.readFloat(savedParam1); // ignoring if it didn't work => will be set to 0
   fSwitchState = ESwitchStateFromValue(savedParam1);
 
-  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%s", fSwitchState == ESwitchState::kA ? "kA" : "kB");
+  // ABSwitchParamID::kSoftenSwitch
+  bool savedParam2 = true;
+  streamer.readBool(savedParam2); // ignoring if it exists => will be set to true
+  fSoften = savedParam2;
+
+  DLOG_F(INFO, "ABSwitchProcessor::setState => fSwitchState=%s, fSoften=%s", fSwitchState == ESwitchState::kA ? "kA" : "kB", fSoften ? "true" : "false");
 
   return kResultOk;
 }
@@ -315,6 +318,7 @@ tresult ABSwitchProcessor::getState(IBStream *state)
 
   IBStreamer streamer(state, kLittleEndian);
   streamer.writeFloat(fSwitchState == ESwitchState::kA ? 0 : 1.0f);
+  streamer.writeBool(fSoften);
   return kResultOk;
 }
 

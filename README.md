@@ -5,6 +5,10 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+2018-04-18 - Status for tag `v1.1.1`
+------------------------------------
+* fixed soften status not being saved
+
 2018-04-18 - Status for tag `v1.1.0`
 ------------------------------------
 * Now builds on Windows as well
@@ -45,7 +49,7 @@ You need to download the VST3 SDK from [steinberg](https://download.steinberg.ne
 
 Installing the SDK
 -------------------
-Unpack the SDK to the following location (note how I renamed it with the versio number)
+Unpack the SDK to the following location (note how I renamed it with the version number)
 
 * `/Users/Shared/Steinberg/VST_SDK.369` for macOS
 * `C:\Users\Public\Documents\Steinberg\VST_SDK.369` for windows.

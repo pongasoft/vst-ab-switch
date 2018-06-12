@@ -136,19 +136,17 @@ tresult ABSwitchController::setComponentState(IBStream *state)
 
   // ABSwitchParamID::kAudioSwitch
   float savedParamAudioSwitch = 0.f;
-  if(!streamer.readFloat(savedParamAudioSwitch))
-    return kResultFalse;
+  streamer.readFloat(savedParamAudioSwitch);
   setParamNormalized(ABSwitchParamID::kAudioSwitch, savedParamAudioSwitch);
 
   // ABSwitchParamID::kSoftenSwitch
-  float savedParamSoftenSwitch = 0.f;
-  if(!streamer.readFloat(savedParamSoftenSwitch))
-    return kResultFalse;
+  bool savedParamSoftenSwitch = true;
+  streamer.readBool(savedParamSoftenSwitch);
   setParamNormalized(ABSwitchParamID::kSoftenSwitch, savedParamSoftenSwitch);
 
-  DLOG_F(INFO, "ABSwitchController::setComponentState => kAudioSwitch=%f, kSoftenSwitch=%f",
-         savedParamAudioSwitch,
-         savedParamSoftenSwitch);
+  DLOG_F(INFO, "ABSwitchController::setComponentState => kAudioSwitch=%s, kSoftenSwitch=%s",
+         savedParamAudioSwitch == 0 ? "kA" : "kB",
+         savedParamSoftenSwitch ? "true" : "false");
 
   return kResultOk;
 }
