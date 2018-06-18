@@ -150,3 +150,20 @@ add_custom_target(archive
 		DEPENDS ${ARCHIVE_PATH}.zip
 		)
 endif()
+
+###################################################
+# Testing
+###################################################
+# Download and unpack googletest at configure time
+include(gtest.cmake)
+enable_testing()
+set(PROJECT_TEST_NAME ${PROJECT_NAME}_test)
+
+file(GLOB_RECURSE TEST_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} test/cpp/*cpp)
+message(STATUS "Test case source files: " ${TEST_SRC_FILES})
+
+add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
+target_link_libraries(${PROJECT_TEST_NAME} gtest_main)
+target_include_directories(${PROJECT_TEST_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(${PROJECT_TEST_NAME} PUBLIC ${GTEST_INCLUDE_DIRS})
+
