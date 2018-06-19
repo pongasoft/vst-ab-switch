@@ -5,6 +5,10 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+2018-06-19 - Status for tag `v1.1.2`
+------------------------------------
+* fixed memory allocation in the real time processing issue
+
 2018-06-12 - Status for tag `v1.1.1`
 ------------------------------------
 * fixed soften status not being saved
@@ -153,6 +157,11 @@ Building this project for macOS
 
             mkdir -p ~/Library/Audio/Plug-Ins/VST3
             cp -r VST3/pongasoft_ABSwitch.vst3 ~/Library/Audio/Plug-Ins/VST3
+
+- You can also run the unit tests part of this project:
+
+        cmake --build . --target VST_AB_Switch_test
+        ctest
 
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 

@@ -25,7 +25,7 @@ endif()
 
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 1)
-set(PLUGIN_PATCH_VERSION 1)
+set(PLUGIN_PATCH_VERSION 2)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project(VST_AB_Switch)
@@ -168,3 +168,8 @@ target_link_libraries(${PROJECT_TEST_NAME} gtest_main)
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 target_include_directories(${PROJECT_TEST_NAME} PUBLIC ${GTEST_INCLUDE_DIRS})
 
+include(GoogleTest)
+gtest_add_tests(
+		TARGET      ${PROJECT_TEST_NAME}
+		TEST_LIST   ${PROJECT_TEST_NAME}_targets
+)

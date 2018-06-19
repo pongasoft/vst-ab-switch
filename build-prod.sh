@@ -17,4 +17,10 @@ if [ -n "${VST3_SDK_ROOT}" ]; then
 fi
 
 cmake ${DVST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
+
+# builds and runs the test
+cmake --build . --target VST_AB_Switch_test
+ctest
+
+# builds the archive
 cmake --build . --target archive
