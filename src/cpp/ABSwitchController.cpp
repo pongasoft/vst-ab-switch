@@ -96,7 +96,7 @@ IPlugView *ABSwitchController::createView(const char *name)
 CView *ABSwitchController::verifyView(CView *view,
                                       const UIAttributes &attributes,
                                       const IUIDescription * /*description*/,
-                                      VST3Editor */*editor*/)
+                                      VST3Editor * /*editor*/)
 {
   DLOG_F(INFO, "ABSwitchController::verifyView()");
 
