@@ -302,13 +302,15 @@ tresult ABSwitchProcessor::setState(IBStream *state)
   State newState{};
 
   // ABSwitchParamID::kAudioSwitch
-  float savedParam1 = 0.f;
-  streamer.readFloat(savedParam1); // ignoring if it didn't work => will be set to 0
+  float savedParam1;
+  if(!streamer.readFloat(savedParam1))
+    savedParam1 = 0;
   newState.fSwitchState = ESwitchStateFromValue(savedParam1);
 
   // ABSwitchParamID::kSoftenSwitch
-  bool savedParam2 = true;
-  streamer.readBool(savedParam2); // ignoring if it exists => will be set to true
+  bool savedParam2;
+  if(!streamer.readBool(savedParam2))
+    savedParam2 = true;
   newState.fSoften = savedParam2;
 
   fStateUpdate.push(newState);

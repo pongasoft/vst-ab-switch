@@ -3,12 +3,15 @@
 
 #include <public.sdk/source/vst/vstaudioeffect.h>
 #include <atomic>
+#include "Concurrent.h"
 
 using namespace Steinberg;
 using namespace Steinberg::Vst;
 
 namespace pongasoft {
 namespace VST {
+
+using namespace Common;
 
 enum class ESwitchState
 {
@@ -28,89 +31,6 @@ public:
   {
     ESwitchState fSwitchState;
     bool fSoften;
-  };
-
-  /**
-   * Thread safe and lock free queue containing at most one element. Calling push multiple times is safe and simply
-   * replaces the value in the queue if there is already one. The intended usage is the UI thread calling "push" (in XProcessor::setState)
-   * and the processor thread calling pop at the beginning of process. If multiple pushes happen before process is called
-   * it is fine because the processor will get the latest version.
-   */
-  template<typename T>
-  class SingleElementQueue
-  {
-  public:
-    SingleElementQueue() : fSingleElement{nullptr}
-    {}
-
-    ~SingleElementQueue()
-    {
-      delete fSingleElement.exchange(nullptr);
-    }
-
-
-    bool pop(T &oElement)
-    {
-      auto element = fSingleElement.exchange(nullptr);
-      if(element)
-      {
-        oElement = *element;
-        delete element;
-        return true;
-      }
-
-      return false;
-    };
-
-    void push(T const &iElement)
-    {
-      delete fSingleElement.exchange(new T(iElement));
-    }
-
-
-  private:
-    std::atomic<T *> fSingleElement;
-  };
-
-  /**
-   * Thread safe and lock free atomic value. The intended usage is the processor calling set when the state is updated.
-   * Then the UI thread will eventually call get (in XProcessor::getState). If the processor updates its state
-   * multiple times before getState is called it is fine as getState will only get the latest value. get is also safe
-   * to be called multiple times and will always return the most up to date version.
-   */
-  template<typename T>
-  class AtomicValue
-  {
-  public:
-    explicit AtomicValue(T const &iValue) : fValue{iValue}, fNewValue{nullptr}
-    {}
-
-    ~AtomicValue()
-    {
-      delete fNewValue.exchange(nullptr);
-    }
-
-    const T &get()
-    {
-      auto state = fNewValue.exchange(nullptr);
-      if(state)
-      {
-        fValue = *state;
-        delete state;
-      }
-
-      return fValue;
-    };
-
-    void set(T const &iState)
-    {
-      delete fNewValue.exchange(new T(iState));
-    }
-
-
-  private:
-    T fValue;
-    std::atomic<T *> fNewValue;
   };
 
 public:
@@ -143,7 +63,8 @@ public:
   // create function required for Plug-in factory,
   // it will be called to create new instances of this Plug-in
   //--- ---------------------------------------------------------------------
-  static FUnknown *createInstance(void * /*context*/) { return (IAudioProcessor *) new ABSwitchProcessor(); }
+  static FUnknown *createInstance(void * /*context*/)
+  { return (IAudioProcessor *) new ABSwitchProcessor(); }
 
   tresult PLUGIN_API setupProcessing(ProcessSetup &setup) override;
 
@@ -179,8 +100,8 @@ private:
   State fState;
   State fPreviousState;
 
-  SingleElementQueue<State> fStateUpdate;
-  AtomicValue<State> fLatestState;
+  SpinLock::SingleElementQueue<State> fStateUpdate;
+  SpinLock::AtomicValue<State> fLatestState;
 };
 
 }
