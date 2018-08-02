@@ -11,7 +11,7 @@
 #include "ABSwitchController.h"
 
 using namespace Steinberg::Vst;
-
+using namespace pongasoft::VST::ABSwitch;
 
 #define stringPluginName "ABSwitch VST"
 
@@ -50,18 +50,17 @@ BEGIN_FACTORY_DEF ("pongasoft",
                 "Fx",          // Subcategory for this Plug-in (to be changed)
                 FULL_VERSION_STR,    // Plug-in version (to be changed)
                 kVstVersionString,    // the VST 3 SDK version (do not changed this, use always this define)
-                pongasoft::VST::ABSwitchProcessor::createInstance)  // function pointer called when this component should be instantiated
+                ABSwitchProcessor::createInstance)  // function pointer called when this component should be instantiated
 
     // ABSwitchController controller
     DEF_CLASS2 (INLINE_UID_FROM_FUID(::pongasoft::VST::ABSwitchControllerUID),
                 PClassInfo::kManyInstances,  // cardinality
                 kVstComponentControllerClass,// the Controller category (do not changed this)
-                stringPluginName
-                  "Controller",  // controller name (could be the same than component name)
+                stringPluginName"Controller",  // controller name (could be the same than component name)
                 0,            // not used here
                 "",            // not used here
                 FULL_VERSION_STR,    // Plug-in version (to be changed)
                 kVstVersionString,    // the VST 3 SDK version (do not changed this, use always this define)
-                pongasoft::VST::ABSwitchController::createInstance)// function pointer called when this component should be instantiated
+                ABSwitchController::createInstance)// function pointer called when this component should be instantiated
 
 END_FACTORY

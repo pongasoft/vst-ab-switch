@@ -1,44 +1,48 @@
 #ifndef VST_AB_SWITCH_STRINGTEXTEDIT_H
 #define VST_AB_SWITCH_STRINGTEXTEDIT_H
 
-#include <vstgui4/vstgui/lib/iviewlistener.h>
 #include <vstgui4/vstgui/lib/controls/ctextedit.h>
+#include <pongasoft/VST/GUI/Views/CustomView.h>
+#include "ABSwitchPlugin.h"
 
 namespace pongasoft {
 namespace VST {
+namespace ABSwitch {
 
 using namespace VSTGUI;
+using namespace GUI::Views;
 
-/**
- * This class lives in the controller and will be assigned the view (CTextEdit) when the UI part of the plugin
- * is shown. In other words this class outlives the view (UI can be opened and closed). Once the view is assigned,
- * it gets initialized with the text (fText) and registers listeners to handle
- * lifecycle (IViewListenerAdapter::viewWillDelete) and changes (IControlListener::valueChanged).
- */
-class StringTextEdit : VSTGUI::IControlListener, VSTGUI::IViewListenerAdapter
+class StringTextEditView : public CustomViewAdapter<CTextEdit>
 {
 public:
-  explicit StringTextEdit(UTF8String const& pText);
-  ~StringTextEdit() override;
+  explicit StringTextEditView(const CRect &iSize) : CustomViewAdapter(iSize, nullptr, -1)
+  {}
 
-  inline const UTF8String &getText() const { return fText; }
-  void setText (const UTF8String& pTxt);
+  void setTag(int32_t val) override;
 
-  void assignTextEdit(CTextEdit *pTextEdit);
+  void registerParameters() override;
 
-private:
-  // called when the value of the control changes
-  void valueChanged(CControl *pControl) override;
+  void valueChanged() override;
 
-  // called when the view will be deleted (UI closed)
-  void viewWillDelete(CView *view) override;
+  void onParameterChange(ParamID iParamID) override;
 
-private:
-  UTF8String fText;
-  CTextEdit *fTextEdit;
+  CLASS_METHODS_NOCOPY(StringTextEditView, CustomViewAdapter<CTextEdit>)
 
+protected:
+  GUISerParameterSPtr<UTF8StringSerializer> fLabel;
+
+public:
+  class Creator : public TCustomViewCreator<StringTextEditView>
+  {
+    public:
+    explicit Creator(char const *iViewName = nullptr, char const *iDisplayName = nullptr) :
+      TCustomViewCreator(iViewName, iDisplayName, VSTGUI::UIViewCreator::kCTextEdit)
+    {
+    }
+  };
 };
 
+}
 }
 }
 

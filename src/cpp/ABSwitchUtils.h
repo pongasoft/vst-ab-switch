@@ -2,11 +2,15 @@
 #define VST_AB_SWITCH_ABSWITUTILS_H
 
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
+#include <algorithm>
 
 namespace pongasoft {
 namespace VST {
 
 namespace Utils {
+
+using namespace Steinberg;
+using namespace Steinberg::Vst;
 
 // defines the threshold of silence
 constexpr Sample32 Sample32SilentThreshold = ((Sample32)2.0e-8);
