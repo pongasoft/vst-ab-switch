@@ -61,15 +61,15 @@ public:
     setGUISaveStateOrder(-1, fLabelAParam, fLabelBParam); // ignore version (for backward compatibility)
   }
 
-  VstParam<SwitchStateParamConverter> fSwitchParam;
-  VstParam<BooleanParamConverter> fSoftenParam;
+  VstParam<ESwitchState> fSwitchParam;
+  VstParam<bool> fSoftenParam;
 
   // transient
-  VstParam<BooleanParamConverter> fAudioOnParam;
+  VstParam<bool> fAudioOnParam;
 
   // Non vst params
-  SerParam<UTF8StringSerializer> fLabelAParam;
-  SerParam<UTF8StringSerializer> fLabelBParam;
+  SerParam<UTF8String> fLabelAParam;
+  SerParam<UTF8String> fLabelBParam;
 
 protected:
   /**
@@ -94,11 +94,11 @@ public:
   {}
 
 public:
-  RTVstParam<SwitchStateParamConverter> fSwitch;
-  RTVstParam<BooleanParamConverter> fSoften;
+  RTVstParam<ESwitchState> fSwitch;
+  RTVstParam<bool> fSoften;
 
   // transient
-  RTVstParam<BooleanParamConverter> fAudioOn;
+  RTVstParam<bool> fAudioOn;
 };
 
 
@@ -112,8 +112,8 @@ public:
   {};
 
 public:
-  GUISerParam<UTF8StringSerializer> fLabelA;
-  GUISerParam<UTF8StringSerializer> fLabelB;
+  GUISerParam<UTF8String> fLabelA;
+  GUISerParam<UTF8String> fLabelB;
 };
 }
 }

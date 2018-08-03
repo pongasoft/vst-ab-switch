@@ -29,7 +29,7 @@ public:
   CLASS_METHODS_NOCOPY(StringTextEditView, CustomViewAdapter<CTextEdit>)
 
 protected:
-  GUISerParameterSPtr<UTF8StringSerializer> fLabel;
+  GUISerParameterSPtr<UTF8String> fLabel;
 
 public:
   class Creator : public TCustomViewCreator<StringTextEditView>

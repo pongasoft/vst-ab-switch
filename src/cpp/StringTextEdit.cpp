@@ -12,24 +12,19 @@ using namespace VSTGUI;
 //------------------------------------------------------------------------
 void StringTextEditView::registerParameters()
 {
-  if(fParamCxMgr)
-  {
-    auto paramID = static_cast<ParamID>(getTag());
+  if(!fParamCxMgr || getTag() < 0)
+    return;
 
-    if(fParamCxMgr->existsSer(paramID))
-    {
-      fLabel = registerSerParam<UTF8StringSerializer>(static_cast<ParamID>(getTag()));
-      if(fLabel)
-      {
-        setText(fLabel->getValue());
-      }
-    }
-    else
-    {
-      if(fLabel)
-        unregisterParam(fLabel->getParamID());
-      fLabel = nullptr;
-    }
+  auto paramID = static_cast<ParamID>(getTag());
+
+  fLabel = registerSerParam<UTF8String>(paramID);
+  if(fLabel)
+  {
+    setText(fLabel->getValue());
+  }
+  else
+  {
+    unregisterParam(paramID);
   }
 }
 
