@@ -2,7 +2,6 @@
 #define VST_AB_SWITCH_ABSWITCHCONTROLLER_H
 
 #include <pongasoft/VST/GUI/GUIController.h>
-#include "StringTextEdit.h"
 #include "ABSwitchPlugin.h"
 
 using namespace Steinberg;

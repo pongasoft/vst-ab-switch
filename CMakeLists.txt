@@ -40,9 +40,6 @@ set(vst_sources
 		${CPP_SOURCES}/ABSwitchProcessor.cpp
 		${CPP_SOURCES}/ABSwitchUtils.h
 		${CPP_SOURCES}/ABSwitchVST3.cpp
-		${CPP_SOURCES}/Concurrent.h
-		${CPP_SOURCES}/StringTextEdit.h
-		${CPP_SOURCES}/StringTextEdit.cpp
 		)
 
 # VST2 is only defined for macOS and Windows
