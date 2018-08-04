@@ -20,6 +20,7 @@ cmake ${DVST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
 
 # builds and runs the test
 cmake --build . --target VST_AB_Switch_test
+cmake --build . --target jamba_test
 ctest
 
 # builds the archive

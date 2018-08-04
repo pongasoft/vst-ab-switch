@@ -15,7 +15,7 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 
 project(VST_AB_Switch)
 
-include(/Volumes/Development/github/org.pongasoft/vst-vac-6v/jamba/jamba.cmake)
+include(../jamba/jamba.cmake)
 
 set(CPP_SOURCES src/cpp)
 
@@ -24,7 +24,6 @@ include_directories(${CMAKE_BINARY_DIR}/generated/)
 
 if (SMTG_CREATE_VST2_VERSION)
 	set(vst2_sources
-			${JAMBA_vst2_sources}
 			${CPP_SOURCES}/ABSwitchVST2.cpp
 			)
 endif()
@@ -44,13 +43,13 @@ set(vst_sources
 
 # VST2 is only defined for macOS and Windows
 if(MAC OR WIN)
-	set(vst_sources ${vst_sources} ${vst2_sources} ${JAMBA_sources_h} ${JAMBA_sources_cpp})
+	set(vst_sources ${vst_sources} ${vst2_sources})
 endif()
 
 set(target pongasoft_ABSwitch)
 smtg_add_vst3plugin(${target} ${VST3_SDK_ROOT} ${vst_sources})
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
-target_link_libraries(${target} PRIVATE base sdk vstgui_support)
+target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
 
 smtg_add_vst3_resource(${target} "resource/ABSwitch.uidesc")
 smtg_add_vst3_resource(${target} "resource/Background.png")
