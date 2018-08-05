@@ -4,6 +4,10 @@ cmake_minimum_required (VERSION 3.9)
 option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 option(SMTG_CREATE_VST3_LINK "" OFF)
 
+set(JAMBA_GIT_REPO "/Volumes/Development/github/org.pongasoft/jamba" CACHE STRING "Jamba git repository url")
+set(JAMBA_GIT_TAG 1211eac680b01c093a1a6eb85bf493322cf833dc CACHE STRING "Jamba git tag")
+
+
 #-------------------------------------------------------------------------------
 # Platform Detection
 #-------------------------------------------------------------------------------
@@ -15,7 +19,11 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 
 project(VST_AB_Switch)
 
-include(../jamba/jamba.cmake)
+if(NOT JAMBA_ROOT_DIR)
+	include(jamba.cmake)
+endif()
+
+include(${JAMBA_ROOT_DIR}/jamba.cmake)
 
 set(CPP_SOURCES src/cpp)
 
@@ -77,3 +85,7 @@ jamba_fix_vst2(${target})
 ###################################################
 jamba_create_archive(${target} ABSwitch)
 
+###################################################
+# Create dev scripts
+###################################################
+jamba_dev_scripts(${target})
