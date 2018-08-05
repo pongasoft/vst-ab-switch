@@ -4,8 +4,8 @@ cmake_minimum_required (VERSION 3.9)
 option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 option(SMTG_CREATE_VST3_LINK "" OFF)
 
-set(JAMBA_GIT_REPO "/Volumes/Development/github/org.pongasoft/jamba" CACHE STRING "Jamba git repository url")
-set(JAMBA_GIT_TAG 1211eac680b01c093a1a6eb85bf493322cf833dc CACHE STRING "Jamba git tag")
+set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
+set(JAMBA_GIT_TAG v1.0.0 CACHE STRING "Jamba git tag" FORCE)
 
 
 #-------------------------------------------------------------------------------

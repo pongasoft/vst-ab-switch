@@ -5,6 +5,10 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+Status for `master` (unreleased)
+--------------------------------
+* 2018-08-05 - Use of [jamba](https://github.com/pongasoft/jamba) framework
+
 2018-06-19 - Status for tag `v1.1.2`
 ------------------------------------
 * fixed memory allocation in the real time processing issue
