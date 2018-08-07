@@ -1,6 +1,8 @@
 #include <base/source/fstreamer.h>
 #include <public.sdk/source/vst/vstaudioprocessoralgo.h>
 #include <pongasoft/logging/logging.h>
+#include "version.h"
+#include "jamba_version.h"
 
 #include "ABSwitchProcessor.h"
 #include "ABSwitchUtils.h"
@@ -27,7 +29,7 @@ ABSwitchProcessor::ABSwitchProcessor() : RTProcessor(ABSwitchControllerUID),
                                          fParameters{},
                                          fState{fParameters}
 {
-  DLOG_F(INFO, "ABSwitchProcessor::ABSwitchProcessor()");
+  DLOG_F(INFO, "ABSwitchProcessor() - jamba: %s - plugin: v%s", JAMBA_GIT_VERSION_STR, FULL_VERSION_STR);
 }
 
 ///////////////////////////////////////////
@@ -35,7 +37,7 @@ ABSwitchProcessor::ABSwitchProcessor() : RTProcessor(ABSwitchControllerUID),
 ///////////////////////////////////////////
 ABSwitchProcessor::~ABSwitchProcessor()
 {
-  DLOG_F(INFO, "ABSwitchProcessor::~ABSwitchProcessor()");
+  DLOG_F(INFO, "~ABSwitchProcessor()");
 }
 
 
