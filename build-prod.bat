@@ -9,7 +9,6 @@ mkdir %BUILD_DIR%
 cd %BUILD_DIR%
 
 cmake -G"Visual Studio 15 2017 Win64" -DCMAKE_CXX_FLAGS=/D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING %SRC_DIR%
-cmake --build . --config Release --target VST_AB_Switch_test
 cmake --build . --config Release --target jamba_test
 ctest -C Release
 
