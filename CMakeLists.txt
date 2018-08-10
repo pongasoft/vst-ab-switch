@@ -5,7 +5,7 @@ option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 option(SMTG_CREATE_VST3_LINK "" OFF)
 
 set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG 0c525d8a900492c4beaaaa4c5560059a018aae28 CACHE STRING "Jamba git tag" FORCE)
+set(JAMBA_GIT_TAG 09c340734785fbe469fa3b4a678ed7b934d2665a CACHE STRING "Jamba git tag" FORCE)
 
 
 #-------------------------------------------------------------------------------

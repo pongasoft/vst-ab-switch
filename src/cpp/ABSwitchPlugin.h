@@ -45,15 +45,15 @@ public:
 
     // the free form text for input label A (saved in state but not tied to a vst parameter since it's a string)
     fLabelAParam =
-      ser<UTF8StringSerializer>(ABSwitchParamID::kAudioInputLabelA, STR16("Label A"))
-        .uiOnly()
+      jmb<UTF8StringSerializer>(ABSwitchParamID::kAudioInputLabelA, STR16("Label A"))
+        .guiOwned()
         .defaultValue("Input Label A")
         .add();
 
     // the free form text for input label B (saved in state but not tied to a vst parameter since it's a string)
     fLabelBParam =
-      ser<UTF8StringSerializer>(ABSwitchParamID::kAudioInputLabelB, STR16("Label B"))
-        .uiOnly()
+      jmb<UTF8StringSerializer>(ABSwitchParamID::kAudioInputLabelB, STR16("Label B"))
+        .guiOwned()
         .defaultValue("Input Label B")
         .add();
 
@@ -68,8 +68,8 @@ public:
   VstParam<bool> fAudioOnParam;
 
   // Non vst params
-  SerParam<UTF8String> fLabelAParam;
-  SerParam<UTF8String> fLabelBParam;
+  JmbParam<UTF8String> fLabelAParam;
+  JmbParam<UTF8String> fLabelBParam;
 
 protected:
   /**
@@ -112,8 +112,8 @@ public:
   {};
 
 public:
-  GUISerParam<UTF8String> fLabelA;
-  GUISerParam<UTF8String> fLabelB;
+  GUIJmbParam<UTF8String> fLabelA;
+  GUIJmbParam<UTF8String> fLabelB;
 };
 }
 }
