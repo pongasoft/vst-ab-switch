@@ -16,12 +16,32 @@ if [ -n "${VST3_SDK_ROOT}" ]; then
   DVST3_SDK_ROOT="-DVST3_SDK_ROOT=${VST3_SDK_ROOT}"
 fi
 
-cmake ${DVST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Generating Makefiles...                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
+${BASEDIR}/configure.sh Release
 
-# builds and runs the test
-# cmake --build . --target VST_AB_Switch_test
-cmake --build . --target jamba_test
-ctest
+cd build/Release
 
-# builds the archive
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Validating plugin......                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
+./validate.sh
+if [ $? -eq 0 ]
+then
+  echo "[Validation ran successfully]"
+else
+  echo "Failure while validating plugin... aborting..."
+  exit 1
+fi
+
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Building archive.......                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
 cmake --build . --target archive

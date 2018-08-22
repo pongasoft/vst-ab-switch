@@ -18,29 +18,27 @@ enum class ESwitchState
 };
 
 // SwitchStateParamConverter
-class SwitchStateParamConverter
+class SwitchStateParamConverter : public IParamConverter<ESwitchState>
 {
 public:
-  using ParamType = ESwitchState;
+  int getStepCount() const override { return fBooleanParamConverter.getStepCount(); }
 
-  inline static ParamValue normalize(ESwitchState const &iValue)
+  inline ParamValue normalize(ESwitchState const &iValue) const override
   {
-    return BooleanParamConverter::normalize(iValue == ESwitchState::kB);
+    return fBooleanParamConverter.normalize(iValue == ESwitchState::kB);
   }
 
-  inline static ESwitchState denormalize(ParamValue iNormalizedValue)
+  inline ESwitchState denormalize(ParamValue iNormalizedValue) const override
   {
-    return BooleanParamConverter::denormalize(iNormalizedValue) ? ESwitchState::kB : ESwitchState::kA;
+    return fBooleanParamConverter.denormalize(iNormalizedValue) ? ESwitchState::kB : ESwitchState::kA;
   }
 
-  inline static void toString(ParamType const &iValue, String128 oString, int32 iPrecision)
+  inline void toString(ParamType const &iValue, String128 oString, int32 iPrecision) const override
   {
-    Steinberg::UString wrapper(oString, str16BufferSize(String128));
-    if(iValue == ESwitchState::kA)
-      wrapper.assign(STR16("A"));
-    else
-      wrapper.assign(STR16("B"));
+    fBooleanParamConverter.toString(iValue == ESwitchState::kB, oString, iPrecision);
   }
+
+  BooleanParamConverter fBooleanParamConverter{STR16("A"), STR16("B")};
 };
 
 }

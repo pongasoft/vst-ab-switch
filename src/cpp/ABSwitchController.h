@@ -30,6 +30,9 @@ public:
   //--- ---------------------------------------------------------------------
   static FUnknown *createInstance(void * /*context*/) { return (IEditController *) new ABSwitchController(); }
 
+protected:
+  tresult initialize(FUnknown *context) override;
+
 private:
   ABSwitchParameters fParameters;
   ABSwitchGUIState fState;

@@ -1,6 +1,7 @@
 #include <base/source/fstreamer.h>
 #include <public.sdk/source/vst/vstaudioprocessoralgo.h>
 #include <pongasoft/logging/logging.h>
+#include <pongasoft/VST/Debug/ParamTable.h>
 #include "version.h"
 #include "jamba_version.h"
 
@@ -30,6 +31,9 @@ ABSwitchProcessor::ABSwitchProcessor() : RTProcessor(ABSwitchControllerUID),
                                          fState{fParameters}
 {
   DLOG_F(INFO, "ABSwitchProcessor() - jamba: %s - plugin: v%s", JAMBA_GIT_VERSION_STR, FULL_VERSION_STR);
+#ifndef NDEBUG
+  DLOG_F(INFO, "Parameters ---> \n%s", Debug::ParamTable::from(fParameters).full().toString().c_str());
+#endif
 }
 
 ///////////////////////////////////////////
@@ -58,6 +62,13 @@ tresult PLUGIN_API ABSwitchProcessor::initialize(FUnknown *context)
   addAudioInput(STR16 ("Stereo In A"), SpeakerArr::kStereo);
   addAudioInput(STR16 ("Stereo In B"), SpeakerArr::kStereo);
   addAudioOutput(STR16 ("Stereo Out"), SpeakerArr::kStereo);
+
+#ifndef NDEBUG
+  using Key = Debug::ParamDisplay::Key;
+  DLOG_F(INFO, "RT Save State - Version=%d --->\n%s",
+         fParameters.getRTSaveStateOrder().fVersion,
+         Debug::ParamTable::from(getRTState(), true).keys({Key::kID, Key::kTitle}).full().toString().c_str());
+#endif
 
   return result;
 }

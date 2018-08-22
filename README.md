@@ -79,48 +79,26 @@ In order to build both VST2 and VST3 at the same time, you need to run the follo
 Building this project for macOS
 -------------------------------
 
-- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        mkdir -p build/Debug
+        ./configure.sh Debug
         cd build/Debug
 
-- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
+- In order to build the plugin run:
 
-        cmake -DCMAKE_BUILD_TYPE=Debug ../
+        ./build.sh
 
-- Now build the plugin (all its dependencies will be built as well):
+- In order to validate the plugin (uses validator) run:
 
-        cmake --build .
+        ./validate.sh
 
-- Testing that it is a valid VST3 plugin (already run part of the build, but can be run separately):
+- In order to edit the plugin UI (uses editor) run:
 
-        > ./bin/validator VST3/pongasoft_ABSwitch.vst3
+        ./edit.sh
 
-        * Loading module...
+- In order to install the plugin locally run (~/Library/Audio/Plug-Ins/VST for VST2 and ~/Library/Audio/Plug-Ins/VST3 for VST3):
 
-        	/tmp/vst3-again-build/VST3/pongasoft_ABSwitch.vst3
-
-        * Scanning classes...
-
-          Factory Info:
-        	vendor = pongasoft
-        	url = https://www.pongasoft.com
-        	email = mailto:support@pongasoft.com
-
-          Class Info 0:
-        	name = ABSwitch VST
-        	category = Audio Module Class
-        	cid = 8D6054662515496785DDBB258AC01235
-
-          Class Info 1:
-        	name = ABSwitch VSTController
-        	category = Component Controller Class
-        	cid = 82AEA4A35B4E4A5FA3D68B1A8A1B69C5
-
-        * Creating tests...
-
-        * Running tests...
-        ....
+        ./install.sh
 
 - Testing that it is a valid VST2 plugin (with [MrsWatson](https://github.com/teragonaudio/MrsWatson)):
 
@@ -150,41 +128,40 @@ Building this project for macOS
         - 00000000 000094   bypass: No
         E 00000000 000094 Output source could not be opened, exiting
 
-- Deploying the plugin and testing in a real DAW
-
-    -  For VST2 (like Maschine and Reason) you copy and *rename* it:
-
-            mkdir -p ~/Library/Audio/Plug-Ins/VST
-            cp -r VST3/pongasoft_ABSwitch.vst3 ~/Library/Audio/Plug-Ins/VST/pongasoft_ABSwitch.vst
-
-    -  For VST3:
-
-            mkdir -p ~/Library/Audio/Plug-Ins/VST3
-            cp -r VST3/pongasoft_ABSwitch.vst3 ~/Library/Audio/Plug-Ins/VST3
-
-- You can also run the unit tests part of this project:
-
-        cmake --build . --target VST_AB_Switch_test
-        ctest
-
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 
 Building this project for Windows
 ---------------------------------
-- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
 
-      mkdir build
-      cd build
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
+        ./configure.bat
+        cd build
 
-      cmake -G"Visual Studio 15 2017 Win64" ../
+- In order to build the plugin run:
 
-- Now build the plugin (all its dependencies will be built as well) (note that unlike macOS the type of build is specified during the build not during the generation of the project):
+        For Debug => ./build.bat
+        For Release => ./build.bat Release
 
-      cmake --build . --config Release
+- In order to validate the plugin (uses validator) run:
 
-Note that the validator will automatically run at the end of the build.
+        For Debug => ./validate.bat
+        For Release => ./validate.bat Release
+
+- In order to edit the plugin UI (uses editor) run:
+
+        ./edit.sh
+
+- In order to install the plugin:
+
+  For VST2, copy VST3/ABSwitch.vst3 and RENAME into ABSwitch.dll under
+  - C:\ProgramFiles\VstPlugins
+  - or any DAW specific path (64bits)
+  - MAKE SURE TO RENAME the file otherwise it will not work
+
+  For VST3, copy ABSwitch.vst3 under
+  - C:\Program Files\Common Files\VST3 (may require admin access)
+  - or any DAW specific path (64bits)
 
 Building the archive (.zip)
 ---------------------------

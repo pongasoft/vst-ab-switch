@@ -4,6 +4,7 @@
 #include <pongasoft/VST/RT/RTState.h>
 #include <pongasoft/VST/GUI/GUIState.h>
 #include <pongasoft/VST/GUI/Params/GUIParamSerializers.h>
+#include <pongasoft/VST/Debug/ParamLine.h>
 
 #include "ABSwitchCIDs.h"
 #include "ABSwitchModel.h"
@@ -19,12 +20,22 @@ using UTF8StringSerializer = UTF8StringParamSerializer<128>;
 class ABSwitchParameters : public Parameters
 {
 public:
+  VstParam<ESwitchState> fSwitchParam;
+  VstParam<bool> fSoftenParam;
+
+  // transient
+  VstParam<bool> fAudioOnParam;
+
+  // Non vst params
+  JmbParam<UTF8String> fLabelAParam;
+  JmbParam<UTF8String> fLabelBParam;
+
+public:
   ABSwitchParameters() : Parameters()
   {
     // the toggle that switches between A and B input
     fSwitchParam =
       vst<SwitchStateParamConverter>(ABSwitchParamID::kAudioSwitch, STR16 ("Audio Switch"))
-        .stepCount(1)
         .defaultValue(ESwitchState::kA)
         .shortTitle(STR16 ("Switch"))
         .add();
@@ -61,16 +72,6 @@ public:
     setGUISaveStateOrder(-1, fLabelAParam, fLabelBParam); // ignore version (for backward compatibility)
   }
 
-  VstParam<ESwitchState> fSwitchParam;
-  VstParam<bool> fSoftenParam;
-
-  // transient
-  VstParam<bool> fAudioOnParam;
-
-  // Non vst params
-  JmbParam<UTF8String> fLabelAParam;
-  JmbParam<UTF8String> fLabelBParam;
-
 protected:
   /**
    * Overridden to handle backward compatibility state saving. */
@@ -86,6 +87,13 @@ using namespace RT;
 class ABSwitchRTState : public RTState
 {
 public:
+  RTVstParam<ESwitchState> fSwitch;
+  RTVstParam<bool> fSoften;
+
+  // transient
+  RTVstParam<bool> fAudioOn;
+
+public:
   explicit ABSwitchRTState(ABSwitchParameters const &iParams) :
     RTState(iParams),
     fSwitch{add(iParams.fSwitchParam)},
@@ -93,17 +101,32 @@ public:
     fAudioOn{add(iParams.fAudioOnParam)}
   {}
 
-public:
-  RTVstParam<ESwitchState> fSwitch;
-  RTVstParam<bool> fSoften;
+#ifndef NDEBUG
+protected:
+  // afterReadNewState
+  void afterReadNewState(NormalizedState *iState) override
+  {
+    DLOG_F(INFO, "RTState::read - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
+    //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::read ---> ");
+  }
 
-  // transient
-  RTVstParam<bool> fAudioOn;
+  // beforeWriteNewState
+  void beforeWriteNewState(NormalizedState *iState) override
+  {
+    DLOG_F(INFO, "RTState::write - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
+    //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::write ---> ");
+  }
+#endif
+
 };
 
 
 class ABSwitchGUIState : public GUIPluginState<ABSwitchParameters>
 {
+public:
+  GUIJmbParam<UTF8String> fLabelA;
+  GUIJmbParam<UTF8String> fLabelB;
+
 public:
   explicit ABSwitchGUIState(ABSwitchParameters const &iParams) :
     GUIPluginState(iParams),
@@ -111,9 +134,32 @@ public:
     fLabelB{add(iParams.fLabelBParam)}
   {};
 
-public:
-  GUIJmbParam<UTF8String> fLabelA;
-  GUIJmbParam<UTF8String> fLabelB;
+#ifndef NDEBUG
+protected:
+  // readGUIState
+  tresult readGUIState(IBStreamer &iStreamer) override
+  {
+    tresult res = GUIState::readGUIState(iStreamer);
+    if(res == kResultOk)
+    {
+      DLOG_F(INFO, "GUIState::read - %s", Debug::ParamLine::from(this, true).toString().c_str());
+      //Debug::ParamTable::from(this, true).showCellSeparation().print("GUIState::read ---> ");
+    }
+    return res;
+  }
+
+  // writeGUIState
+  tresult writeGUIState(IBStreamer &oStreamer) const override
+  {
+    tresult res = GUIState::writeGUIState(oStreamer);
+    if(res == kResultOk)
+    {
+      DLOG_F(INFO, "GUIState::write - %s", Debug::ParamLine::from(this, true).toString().c_str());
+      //Debug::ParamTable::from(this, true).showCellSeparation().print("GUIState::write ---> ");
+    }
+    return res;
+  }
+#endif
 };
 }
 }
