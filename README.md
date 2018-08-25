@@ -49,32 +49,7 @@ Status for `master` (unreleased)
 
 Configuration and requirements
 ------------------------------
-This project is known to work on macOS High Siera 10.13.3 with Xcode 9.2 installed. It also has been tested on Windows 10 64 bits and Visual Studio Build tools (2017). It requires `cmake` version 3.9 at the minimum. Because it uses `cmake` it should work on other platforms but it has not been tested.
-
-Downloading the SDK
--------------------
-You need to download the VST3 SDK from [steinberg](https://download.steinberg.net/sdk_downloads/vstsdk369_01_03_2018_build_132.zip) (3.6.9 as of 2018/03/01 and what is used in this project) (shasum 256 => `7c6c2a5f0bcbf8a7a0d6a42b782f0d3c00ec8eafa4226bbf2f5554e8cd764964`).
-
-Installing the SDK
--------------------
-Unpack the SDK to the following location (note how I renamed it with the version number)
-
-* `/Users/Shared/Steinberg/VST_SDK.369` for macOS
-* `C:\Users\Public\Documents\Steinberg\VST_SDK.369` for windows.
-
-You can also store in a different location and use the `VST3_SDK_ROOT` variable when using cmake to define its location.
-
-Configuring the SDK
--------------------
-In order to build both VST2 and VST3 at the same time, you need to run the following commands
-
-    # for macOS
-    cd /Users/Shared/Steinberg/VST_SDK.369
-    ./copy_vst2_to_vst3_sdk.sh
-
-    # for Windows
-    cd C:\Users\Public\Documents\Steinberg\VST_SDK.369
-    copy_vst2_to_vst3_sdk.bat
+Check the Jamba [README](https://github.com/pongasoft/jamba/blob/master/README.md) file for instructions on how to install and configure the VST3 SDK.
 
 Building this project for macOS
 -------------------------------
@@ -166,6 +141,23 @@ Building this project for Windows
 Building the archive (.zip)
 ---------------------------
 A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder.
+
+Parameters
+----------
+These are the parameters used by this plugin:
+
+    | ID   | TITLE        | TYP | OW | TRS | SHA | DEF.N | DEF.S         | STP | FLG | SHORT  | PRE | UID | UNS |
+    -------------------------------------------------------------------------------------------------------------
+    | 1000 | Audio Switch | vst | rt |     |     | 0.000 | A             | 1   | 1   | Switch | 4   | 0   |     |
+    -------------------------------------------------------------------------------------------------------------
+    | 1010 | Soften       | vst | rt |     |     | 1.000 | On            | 1   | 1   | Soft   | 4   | 0   |     |
+    -------------------------------------------------------------------------------------------------------------
+    | 1020 | Audio On     | vst | rt | x   |     | 0.000 | Off           | 1   | 2   |        | 4   | 0   |     |
+    -------------------------------------------------------------------------------------------------------------
+    | 500  | Label A      | jmb | ui |     |     |       | Input Label A |     |     |        |     |     |     |
+    -------------------------------------------------------------------------------------------------------------
+    | 501  | Label B      | jmb | ui |     |     |       | Input Label B |     |     |        |     |     |     |
+    -------------------------------------------------------------------------------------------------------------
 
 Misc
 ----
