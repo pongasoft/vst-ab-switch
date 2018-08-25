@@ -75,7 +75,7 @@ public:
 protected:
   /**
    * Overridden to handle backward compatibility state saving. */
-  std::unique_ptr<NormalizedState> readRTState(IBStreamer &iStreamer) const override;
+  tresult readRTState(IBStreamer &iStreamer, NormalizedState *oNormalizedState) const override;
 
   /**
    * Overridden to handle backward compatibility state saving. */
@@ -104,14 +104,14 @@ public:
 #ifndef NDEBUG
 protected:
   // afterReadNewState
-  void afterReadNewState(NormalizedState *iState) override
+  void afterReadNewState(NormalizedState const *iState) override
   {
     DLOG_F(INFO, "RTState::read - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
     //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::read ---> ");
   }
 
   // beforeWriteNewState
-  void beforeWriteNewState(NormalizedState *iState) override
+  void beforeWriteNewState(NormalizedState const *iState) override
   {
     DLOG_F(INFO, "RTState::write - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
     //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::write ---> ");

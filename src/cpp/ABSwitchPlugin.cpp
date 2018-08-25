@@ -7,25 +7,23 @@ namespace ABSwitch {
 //------------------------------------------------------------------------
 // ABSwitchParameters::readRTState
 //------------------------------------------------------------------------
-std::unique_ptr<NormalizedState> ABSwitchParameters::readRTState(IBStreamer &iStreamer) const
+tresult ABSwitchParameters::readRTState(IBStreamer &iStreamer, NormalizedState *oNormalizedState) const
 {
   DLOG_F(INFO, "ABSwitchParameters::readRTState");
-
-  auto state = newRTState();
 
   // ABSwitchParamID::kAudioSwitch
   float savedParam1;
   if(!iStreamer.readFloat(savedParam1))
     savedParam1 = static_cast<float>(fSwitchParam->fDefaultValue);
-  state->set(0, fSwitchParam->normalize(fSwitchParam->denormalize(savedParam1)));
+  oNormalizedState->set(0, fSwitchParam->normalize(fSwitchParam->denormalize(savedParam1)));
 
   // ABSwitchParamID::kSoftenSwitch
   bool savedParam2;
   if(!iStreamer.readBool(savedParam2))
     savedParam2 = fSoftenParam->getDefaultValue();
-  state->set(1, fSoftenParam->normalize(savedParam2));
+  oNormalizedState->set(1, fSoftenParam->normalize(savedParam2));
 
-  return state;
+  return kResultOk;
 }
 
 //------------------------------------------------------------------------
@@ -40,6 +38,7 @@ tresult ABSwitchParameters::writeRTState(NormalizedState const *iNormalizedState
 
   return kResultOk;
 }
+
 
 }
 }
