@@ -4,10 +4,6 @@ cmake_minimum_required (VERSION 3.9)
 option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 option(SMTG_CREATE_VST3_LINK "" OFF)
 
-set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG v2.0.0 CACHE STRING "Jamba git tag" FORCE)
-
-
 #-------------------------------------------------------------------------------
 # Platform Detection
 #-------------------------------------------------------------------------------
@@ -19,14 +15,11 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 
 project(VST_AB_Switch)
 
-# for working on the framework at the same time...
-#set(JAMBA_ROOT_DIR ../jamba)
+# To disable download/update, you can set those 2 variables to local folders
+set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
+#set(GOOGLETEST_ROOT_DIR ../../google/googletest)
 
-if(NOT JAMBA_ROOT_DIR)
-	include(jamba.cmake)
-endif()
-
-include(${JAMBA_ROOT_DIR}/jamba.cmake)
+include(jamba.cmake)
 
 set(CPP_SOURCES src/cpp)
 
@@ -62,22 +55,23 @@ smtg_add_vst3plugin(${target} ${VST3_SDK_ROOT} ${vst_sources})
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
 target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
 
-smtg_add_vst3_resource(${target} "resource/ABSwitch.uidesc")
-smtg_add_vst3_resource(${target} "resource/Background.png")
-smtg_add_vst3_resource(${target} "resource/Background_2x.png")
-smtg_add_vst3_resource(${target} "resource/Control_AudioSwitch.png")
-smtg_add_vst3_resource(${target} "resource/Control_AudioSwitch_2x.png")
-smtg_add_vst3_resource(${target} "resource/Control_SoftenSwitch.png")
-smtg_add_vst3_resource(${target} "resource/Control_SoftenSwitch_2x.png")
-smtg_add_vst3_resource(${target} "resource/Control_LEDLight_On_2x.png")
-smtg_add_vst3_resource(${target} "resource/Control_LEDLight_On.png")
-smtg_add_vst3_resource(${target} "resource/Control_LEDLight_Off_2x.png")
-smtg_add_vst3_resource(${target} "resource/Control_LEDLight_Off.png")
+jamba_add_vst3_resource(${target} DATA "ABSwitch.uidesc")
+jamba_add_vst3_resource(${target} PNG "Background.png")
+jamba_add_vst3_resource(${target} PNG "Background_2x.png")
+jamba_add_vst3_resource(${target} PNG "Control_AudioSwitch.png")
+jamba_add_vst3_resource(${target} PNG "Control_AudioSwitch_2x.png")
+jamba_add_vst3_resource(${target} PNG "Control_SoftenSwitch.png")
+jamba_add_vst3_resource(${target} PNG "Control_SoftenSwitch_2x.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight_On_2x.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight_On.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off_2x.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off.png")
 
 if(MAC)
-	smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)
+  smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)
 elseif(WIN)
-	target_sources(${target} PRIVATE resource/ABSwitch.rc)
+  jamba_gen_vst3_resource_rc("${CMAKE_BINARY_DIR}/generated/vst3_resources.rc")
+  target_sources(${target} PRIVATE resource/ABSwitch.rc)
 endif()
 
 # fix for vst2

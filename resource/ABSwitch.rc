@@ -3,17 +3,7 @@
 
 #define APSTUDIO_READONLY_SYMBOLS
 
-ABSwitch.uidesc                 DATA  "ABSwitch.uidesc"
-Background.png		            PNG  "Background.png"
-Background_2x.png		        PNG  "Background_2x.png"
-Control_AudioSwitch.png		    PNG  "Control_AudioSwitch.png"
-Control_AudioSwitch_2x.png		PNG  "Control_AudioSwitch_2x.png"
-Control_SoftenSwitch.png		PNG  "Control_SoftenSwitch.png"
-Control_SoftenSwitch_2x.png		PNG  "Control_SoftenSwitch_2x.png"
-Control_LEDLight_On_2x.png		PNG  "Control_LEDLight_On_2x.png"
-Control_LEDLight_On.png		    PNG  "Control_LEDLight_On.png"
-Control_LEDLight_Off_2x.png		PNG  "Control_LEDLight_Off_2x.png"
-Control_LEDLight_Off.png		PNG  "Control_LEDLight_Off.png"
+#include "vst3_resources.rc"
 
 /////////////////////////////////////////////////////////////////////////////
 // Version
