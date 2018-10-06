@@ -51,96 +51,62 @@ Configuration and requirements
 ------------------------------
 Check the Jamba [README](https://github.com/pongasoft/jamba/blob/master/README.md) file for instructions on how to install and configure the VST3 SDK.
 
-Building this project for macOS
--------------------------------
+Build this project
+------------------
+
+The following steps describes (for each platform) how to build the plugin.
+
+### macOS
 
 - For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        ./configure.sh Debug
-        cd build/Debug
+        ./configure.sh
+        cd build
 
-- In order to build the plugin run:
+- In order to build, test, validate, etc... simply use the `jamba.sh` script (use `-h` for details):
 
-        ./build.sh
-
-- In order to validate the plugin (uses validator) run:
-
-        ./validate.sh
-
-- In order to edit the plugin UI (uses editor) run:
-
-        ./edit.sh
-
-- In order to install the plugin locally run (~/Library/Audio/Plug-Ins/VST for VST2 and ~/Library/Audio/Plug-Ins/VST3 for VST3):
-
-        ./install.sh
+         ./jamba.sh -h
 
 - Testing that it is a valid VST2 plugin (with [MrsWatson](https://github.com/teragonaudio/MrsWatson)):
 
-        > mrswatson64 --display-info -p VST3/pongasoft_ABSwitch.vst3
+        > mrswatson64 --display-info -p VST3/Debug/pongasoft_ABSwitch.vst3
         - 00000000 000001 MrsWatson version 0.9.8 initialized, build 20150122
-        - 00000000 000001 Plugin 'VST3/pongasoft_ABSwitch.vst3' is of type VST2.x
-        - 00000000 000001 Opening VST2.x plugin 'VST3/pongasoft_ABSwitch.vst3'
-        - 00000000 000094 Information for VST2.x plugin 'pongasoft_ABSwitch.vst3'
-        - 00000000 000094 Vendor: pongasoft
-        - 00000000 000094 Version: 16973825
-        - 00000000 000094 Unique ID: TBDx
-        - 00000000 000094 Plugin type: effect, category 1
-        - 00000000 000094 Version: 1
-        - 00000000 000094 I/O: 2/2
-        - 00000000 000094 InitialDelay: 0 frames
-        - 00000000 000094 Parameters (0 total):
-        - 00000000 000094 Programs (0 total):
-        - 00000000 000094 Current program: ''
-        - 00000000 000094 Common canDo's:
-        - 00000000 000094   sendVstEvents: No
-        - 00000000 000094   sendVstMidiEvent: No
-        - 00000000 000094   receiveVstEvents: No
-        - 00000000 000094   receiveVstMidiEvent: No
-        - 00000000 000094   receiveVstTimeInfo: Yes
-        - 00000000 000094   offline: Yes
-        - 00000000 000094   midiProgramNames: No
-        - 00000000 000094   bypass: No
-        E 00000000 000094 Output source could not be opened, exiting
+        - 00000000 000001 Plugin 'VST3/Debug/pongasoft_ABSwitch.vst3' is of type VST2.x
+        - 00000000 000001 Opening VST2.x plugin 'VST3/Debug/pongasoft_ABSwitch.vst3'
+        - 00000000 000011 Information for VST2.x plugin 'pongasoft_ABSwitch.vst3'
+        - 00000000 000011 Vendor: pongasoft
+        - 00000000 000011 Version: 16843264
+        - 00000000 000011 Unique ID: jobi
+        - 00000000 000011 Plugin type: effect, category 1
+        - 00000000 000011 Version: 1
+        - 00000000 000011 I/O: 6/2
+        - 00000000 000011 InitialDelay: 0 frames
+        - 00000000 000011 Parameters (2 total):
+        - 00000000 000011   0: 'Audio Switch' (0.000000)
+        - 00000000 000011   1: 'Soften' (1.000000)
+        - 00000000 000011 Programs (0 total):
+        - 00000000 000011 Current program: ''
+        - 00000000 000011 Common canDo's:
+        - 00000000 000011   sendVstEvents: No
+        - 00000000 000011   sendVstMidiEvent: No
+        - 00000000 000011   receiveVstEvents: No
+        - 00000000 000011   receiveVstMidiEvent: No
+        - 00000000 000011   receiveVstTimeInfo: Yes
+        - 00000000 000011   offline: Yes
+        - 00000000 000011   midiProgramNames: No
+        - 00000000 000011   bypass: No
+        E 00000000 000011 Output source could not be opened, exiting
 
-Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
+### Windows
 
-Building this project for Windows
----------------------------------
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere. Note that PowerShell is highly recommended.
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
-
-        ./configure.bat
+        .\configure.bat
         cd build
 
-- In order to build the plugin run:
+- In order to build, test, validate, etc... simply use the `jamba.bat` script (use `-h` for details):
 
-        For Debug => ./build.bat
-        For Release => ./build.bat Release
-
-- In order to validate the plugin (uses validator) run:
-
-        For Debug => ./validate.bat
-        For Release => ./validate.bat Release
-
-- In order to edit the plugin UI (uses editor) run:
-
-        ./edit.sh
-
-- In order to install the plugin:
-
-  For VST2, copy VST3/ABSwitch.vst3 and RENAME into ABSwitch.dll under
-  - C:\ProgramFiles\VstPlugins
-  - or any DAW specific path (64bits)
-  - MAKE SURE TO RENAME the file otherwise it will not work
-
-  For VST3, copy ABSwitch.vst3 under
-  - C:\Program Files\Common Files\VST3 (may require admin access)
-  - or any DAW specific path (64bits)
-
-Building the archive (.zip)
----------------------------
-A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder.
+         .\jamba.bat -h
 
 Parameters
 ----------

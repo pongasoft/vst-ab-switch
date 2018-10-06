@@ -1,8 +1,10 @@
 cmake_minimum_required (VERSION 3.9)
 
-# build VST 2 by default
-option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
-option(SMTG_CREATE_VST3_LINK "" OFF)
+# build VST 2?
+option(JAMBA_ENABLE_VST2 "Use VST2" ON)
+
+# build Audio Unit? (not yet)
+option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" OFF)
 
 #-------------------------------------------------------------------------------
 # Platform Detection
@@ -55,6 +57,9 @@ jamba_add_vst3plugin(${target} "${vst_sources}")
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
 target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
 
+###################################################
+# Resources
+###################################################
 jamba_add_vst3_resource(${target} DATA "ABSwitch.uidesc")
 jamba_add_vst3_resource(${target} PNG "Background.png")
 jamba_add_vst3_resource(${target} PNG "Background_2x.png")
@@ -67,12 +72,8 @@ jamba_add_vst3_resource(${target} PNG "Control_LEDLight_On.png")
 jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off_2x.png")
 jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off.png")
 
-if(MAC)
-  smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)
-elseif(WIN)
-  jamba_gen_vst3_resource_rc("${CMAKE_BINARY_DIR}/generated/vst3_resources.rc")
-  target_sources(${target} PRIVATE resource/ABSwitch.rc)
-endif()
+# this must be called after you are done calling jamba_add_vst3_resource for all resources
+jamba_gen_vst3_resources(${target} "ABSwitch")
 
 ###################################################
 # Create archive (.tgz)
