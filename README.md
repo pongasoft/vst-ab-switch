@@ -7,7 +7,7 @@ This project is connected to the [VST Development Notes](https://www.pongasoft.c
 
 Status for `master` (unreleased)
 --------------------------------
-* 2018-08-05 - Use of [jamba](https://github.com/pongasoft/jamba) framework
+* 2018-10-06 - Use of [jamba](https://github.com/pongasoft/jamba) framework. No new feature (easier to build and use common code).
 
 2018-06-19 - Status for tag `v1.1.2`
 ------------------------------------
