@@ -3,6 +3,7 @@
 
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
 #include <algorithm>
+#include <pongasoft/logging/logging.h>
 
 namespace pongasoft {
 namespace VST {
@@ -75,6 +76,12 @@ tresult linearCrossFade(AudioBusBuffers &audioBufferIn1,
   SampleType** in2 = getBuffer<SampleType>(audioBufferIn2);
   SampleType** out = getBuffer<SampleType>(audioBufferOut);
 
+  if(!out || !in1 || !in2)
+  {
+    DLOG_F(ERROR, "no inputs or output provided");
+    return kResultFalse;
+  }
+
   double delta = 1.0 / (numSamples - 1);
 
   for(int32 i = 0; i < numChannels; i++)
@@ -83,14 +90,21 @@ tresult linearCrossFade(AudioBusBuffers &audioBufferIn1,
     auto ptrIn1 = in1[i];
     auto ptrIn2 = in2[i];
     auto ptrOut = out[i];
+
+    if(!ptrOut)
+    {
+      DLOG_F(ERROR, "no output provided");
+      return kResultFalse;
+    }
+
     bool silent = true;
 
     double t = 0;
 
     while(--samples >= 0)
     {
-      auto sample1 = *ptrIn1++;
-      auto sample2 = *ptrIn2++;
+      auto sample1 = ptrIn1 ? *ptrIn1++ : 0;
+      auto sample2 = ptrIn2 ? *ptrIn2++ : 0;
 
       // cross fade
       SampleType tmp = (sample1) * (1.0 - t) + (sample2) * t;
@@ -123,17 +137,30 @@ tresult copy(AudioBusBuffers &audioBufferIn,
   SampleType** in = getBuffer<SampleType>(audioBufferIn);
   SampleType** out = getBuffer<SampleType>(audioBufferOut);
 
+  if(!out || !in)
+  {
+    DLOG_F(ERROR, "no input or output provided");
+    return kResultFalse;
+  }
+
   for(int32 i = 0; i < numChannels; i++)
   {
     int32 samples = numSamples;
 
     auto ptrIn = in[i];
     auto ptrOut = out[i];
+
+    if(!ptrOut)
+    {
+      DLOG_F(ERROR, "no output provided");
+      return kResultFalse;
+    }
+
     bool silent = true;
 
     while(--samples >= 0)
     {
-      auto sample = *ptrIn++;
+      auto sample = ptrIn ? *ptrIn++ : 0;
 
       (*ptrOut++) = sample;
 
