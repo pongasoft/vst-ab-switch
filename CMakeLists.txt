@@ -18,7 +18,9 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 project(VST_AB_Switch)
 
 # To disable download/update, you can set those 2 variables to local folders
+unset(JAMBA_ROOT_DIR)
 #set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
+unset(GOOGLETEST_ROOT_DIR)
 #set(GOOGLETEST_ROOT_DIR ../../google/googletest)
 
 include(jamba.cmake)
