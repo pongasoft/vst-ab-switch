@@ -13,7 +13,13 @@
 using namespace Steinberg::Vst;
 using namespace pongasoft::VST::ABSwitch;
 
+
+#ifndef NDEBUG
+#define stringPluginName "ABSwitch VST_Debug"
+#else
 #define stringPluginName "ABSwitch VST"
+#endif
+
 
 //------------------------------------------------------------------------
 //  Module init/exit

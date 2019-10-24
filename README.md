@@ -127,7 +127,7 @@ These are the parameters used by this plugin:
 
 Misc
 ----
-This project uses [loguru](https://github.com/emilk/loguru) for logging (included under `src/cpp/logging`)
+This project uses [loguru](https://github.com/emilk/loguru) for logging.
 
 Licensing
 ---------
