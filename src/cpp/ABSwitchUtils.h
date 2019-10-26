@@ -5,10 +5,7 @@
 #include <algorithm>
 #include <pongasoft/logging/logging.h>
 
-namespace pongasoft {
-namespace VST {
-
-namespace Utils {
+namespace pongasoft::VST::ABSwitch::Utils {
 
 using namespace Steinberg;
 using namespace Steinberg::Vst;
@@ -176,8 +173,6 @@ tresult copy(AudioBusBuffers &audioBufferIn,
 }
 
 
-}
-}
 }
 
 

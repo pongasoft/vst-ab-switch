@@ -21,7 +21,7 @@ enum class ESwitchState
 class SwitchStateParamConverter : public IParamConverter<ESwitchState>
 {
 public:
-  int getStepCount() const override { return fBooleanParamConverter.getStepCount(); }
+  int32 getStepCount() const override { return fBooleanParamConverter.getStepCount(); }
 
   inline ParamValue normalize(ESwitchState const &iValue) const override
   {
