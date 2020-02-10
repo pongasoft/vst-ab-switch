@@ -101,7 +101,7 @@ tresult ABSwitchProcessor::genericProcessInputs(ProcessData &data)
 
   // case when we are switching between A & B and soften is on => need to cross fade
   // also note that we need more than 1 input in order to cross fade...
-  if(fState.fSwitch.hasChanged() && fState.fSoften && data.numInputs > 1)
+  if(fState.fSwitch.hasChanged() && *fState.fSoften && data.numInputs > 1)
     res = processCrossFade<SampleType>(data);
   else
     res = processCopy<SampleType>(data);
@@ -134,7 +134,7 @@ tresult ABSwitchProcessor::processCopy(ProcessData &data)
 
   // this is where the "magic" happens => determines which input we use (A or B)
   if(data.numInputs > 1)
-    inputIndex = mapSwitchStateToInput(fState.fSwitch);
+    inputIndex = mapSwitchStateToInput(*fState.fSwitch);
 
   AudioBusBuffers &stereoInput = data.inputs[inputIndex];
   AudioBusBuffers &stereoOutput = data.outputs[0];
@@ -153,7 +153,7 @@ tresult ABSwitchProcessor::processCrossFade(ProcessData &data)
   AudioBusBuffers &stereoOutput = data.outputs[0];
 
   AudioBusBuffers &stereoInput1 = data.inputs[mapSwitchStateToInput(fState.fSwitch.previous())];
-  AudioBusBuffers &stereoInput2 = data.inputs[mapSwitchStateToInput(fState.fSwitch)];
+  AudioBusBuffers &stereoInput2 = data.inputs[mapSwitchStateToInput(fState.fSwitch.value())];
 
   return Utils::linearCrossFade<SampleType>(stereoInput1,
                                             stereoInput2,
