@@ -69,10 +69,8 @@ jamba_add_vst3_resource(${target} PNG "Control_AudioSwitch.png")
 jamba_add_vst3_resource(${target} PNG "Control_AudioSwitch_2x.png")
 jamba_add_vst3_resource(${target} PNG "Control_SoftenSwitch.png")
 jamba_add_vst3_resource(${target} PNG "Control_SoftenSwitch_2x.png")
-jamba_add_vst3_resource(${target} PNG "Control_LEDLight_On_2x.png")
-jamba_add_vst3_resource(${target} PNG "Control_LEDLight_On.png")
-jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off_2x.png")
-jamba_add_vst3_resource(${target} PNG "Control_LEDLight_Off.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight.png")
+jamba_add_vst3_resource(${target} PNG "Control_LEDLight_2x.png")
 
 # this must be called after you are done calling jamba_add_vst3_resource for all resources
 jamba_gen_vst3_resources(${target} "ABSwitch")
