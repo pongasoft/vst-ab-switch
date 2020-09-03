@@ -56,59 +56,32 @@ Check the Jamba [README](https://github.com/pongasoft/jamba/blob/master/README.m
 Build this project
 ------------------
 
-The following steps describes (for each platform) how to build the plugin.
+The following steps describes how to build the plugin: 
+
+1. Invoke the `configure.py` python script to configure the project
+2. Run the `jamba.sh` (resp. `jamba.bat`) command line to build, test validate...
 
 ### macOS
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
+For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        ./configure.sh
-        cd build
-
-- In order to build, test, validate, etc... simply use the `jamba.sh` script (use `-h` for details):
-
-         ./jamba.sh -h
-
-- Testing that it is a valid VST2 plugin (with [MrsWatson](https://github.com/teragonaudio/MrsWatson)):
-
-        > mrswatson64 --display-info -p VST3/Debug/pongasoft_ABSwitch.vst3
-        - 00000000 000001 MrsWatson version 0.9.8 initialized, build 20150122
-        - 00000000 000001 Plugin 'VST3/Debug/pongasoft_ABSwitch.vst3' is of type VST2.x
-        - 00000000 000001 Opening VST2.x plugin 'VST3/Debug/pongasoft_ABSwitch.vst3'
-        - 00000000 000011 Information for VST2.x plugin 'pongasoft_ABSwitch.vst3'
-        - 00000000 000011 Vendor: pongasoft
-        - 00000000 000011 Version: 16843264
-        - 00000000 000011 Unique ID: jobi
-        - 00000000 000011 Plugin type: effect, category 1
-        - 00000000 000011 Version: 1
-        - 00000000 000011 I/O: 6/2
-        - 00000000 000011 InitialDelay: 0 frames
-        - 00000000 000011 Parameters (2 total):
-        - 00000000 000011   0: 'Audio Switch' (0.000000)
-        - 00000000 000011   1: 'Soften' (1.000000)
-        - 00000000 000011 Programs (0 total):
-        - 00000000 000011 Current program: ''
-        - 00000000 000011 Common canDo's:
-        - 00000000 000011   sendVstEvents: No
-        - 00000000 000011   sendVstMidiEvent: No
-        - 00000000 000011   receiveVstEvents: No
-        - 00000000 000011   receiveVstMidiEvent: No
-        - 00000000 000011   receiveVstTimeInfo: Yes
-        - 00000000 000011   offline: Yes
-        - 00000000 000011   midiProgramNames: No
-        - 00000000 000011   bypass: No
-        E 00000000 000011 Output source could not be opened, exiting
+```
+> ./configure.py -h # to see the help
+> ./configure.py
+> cd build
+> ./jamba.sh -h
+```
 
 ### Windows
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere. Note that PowerShell is highly recommended.
+For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere. Note that PowerShell is highly recommended.
 
-        .\configure.bat
-        cd build
-
-- In order to build, test, validate, etc... simply use the `jamba.bat` script (use `-h` for details):
-
-         .\jamba.bat -h
+```
+> python configure.py -h # to see the help
+> python configure.py
+> cd build
+> .\jamba.bat -h
+```
 
 Parameters
 ----------
