@@ -7,9 +7,7 @@
 using namespace Steinberg;
 using namespace Steinberg::Vst;
 
-namespace pongasoft {
-namespace VST {
-namespace ABSwitch {
+namespace pongasoft::VST::ABSwitch {
 
 /**
  * Represents the controller part of the plugin. Manages the UI.
@@ -17,6 +15,11 @@ namespace ABSwitch {
 class ABSwitchController : public GUI::GUIController
 {
 public:
+  //------------------------------------------------------------------------
+  // UUID() method used to create the controller
+  //------------------------------------------------------------------------
+  static inline ::Steinberg::FUID UUID() { return ABSwitchControllerUID; };
+
   ABSwitchController();
 
   ~ABSwitchController() override;
@@ -38,8 +41,6 @@ private:
   ABSwitchGUIState fState;
 };
 
-}
-}
 }
 
 #endif //VST_AB_SWITCH_ABSWITCHCONTROLLER_H

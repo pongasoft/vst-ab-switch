@@ -8,9 +8,7 @@
 using namespace Steinberg;
 using namespace Steinberg::Vst;
 
-namespace pongasoft {
-namespace VST {
-namespace ABSwitch {
+namespace pongasoft::VST::ABSwitch {
 
 /**
  * class ABSwitchProcessor, main processor for ABSwitch VST
@@ -18,6 +16,11 @@ namespace ABSwitch {
 class ABSwitchProcessor : public RT::RTProcessor
 {
 public:
+  //------------------------------------------------------------------------
+  // UUID() method used to create the processor
+  //------------------------------------------------------------------------
+  static inline ::Steinberg::FUID UUID() { return ABSwitchProcessorUID; };
+
   ABSwitchProcessor();
 
   ~ABSwitchProcessor() override;
@@ -68,8 +71,6 @@ private:
   ABSwitchRTState fState;
 };
 
-}
-}
 }
 
 #endif //VST_AB_SWITCH_ABSWITCHPROCESSOR_H

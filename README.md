@@ -9,6 +9,7 @@ Status for `master` (unreleased)
 --------------------------------
 * 2018-10-06 - Use of [jamba](https://github.com/pongasoft/jamba) framework. No new feature (easier to build and use common code).
 * 2020-03-14 - Use of `ParamImageView` for LED status lights
+* 2020-09-03 - Migrated to Jamba 5.0.0 / VST SDK 3.7.0
 
 2018-06-19 - Status for tag `v1.1.2`
 ------------------------------------

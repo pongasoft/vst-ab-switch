@@ -1,6 +1,5 @@
-#ifndef VST_AB_SWITCH_VERSION_H
-#define VST_AB_SWITCH_VERSION_H
-#pragma once
+#ifndef VST3_JAMBA_ABSwitch_VERSION_H
+#define VST3_JAMBA_ABSwitch_VERSION_H
 
 #define MAJOR_VERSION_STR "@PLUGIN_MAJOR_VERSION@"
 #define MAJOR_VERSION_INT @PLUGIN_MAJOR_VERSION@
@@ -17,13 +16,19 @@
 // Audio Unit version (as an hex int)
 #define AU_VERSION_INT 0x@AU_PLUGIN_VERSION_HEX@
 
-#define stringOriginalFilename	"pongasoft_ABSwitch.vst3"
+#define stringOriginalFilename	"ABSwitch.vst3"
 #ifdef PLATFORM_64
 #define stringFileDescription	"A/B Switch VST plugin by pongasoft (64Bit)"
 #else
 #define stringFileDescription	"ABSwitch VST plugin by pongasoft"
 #endif
 #define stringCompanyName		"pongasoft\0"
-#define stringLegalCopyright	"© 2018 pongasoft LLC"
+#define stringLegalCopyright	"© 2018-2020 pongasoft"
 
-#endif //VST_AB_SWITCH_VERSION_H
+#ifndef NDEBUG
+#define stringPluginName "ABSwitch_Debug"
+#else
+#define stringPluginName "ABSwitch"
+#endif
+
+#endif // VST3_JAMBA_ABSwitch_VERSION_H
