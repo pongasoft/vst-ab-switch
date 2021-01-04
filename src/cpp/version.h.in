@@ -13,17 +13,16 @@
 // Version with build number
 #define FULL_VERSION_STR "@PLUGIN_VERSION@"
 
+// Architecture
+#define BUILD_ARCHIVE_ARCHITECTURE "@JAMBA_ARCHIVE_ARCHITECTURE@"
+
 // Audio Unit version (as an hex int)
 #define AU_VERSION_INT 0x@AU_PLUGIN_VERSION_HEX@
 
 #define stringOriginalFilename	"ABSwitch.vst3"
-#ifdef PLATFORM_64
-#define stringFileDescription	"A/B Switch VST plugin by pongasoft (64Bit)"
-#else
-#define stringFileDescription	"ABSwitch VST plugin by pongasoft"
-#endif
+#define stringFileDescription	"A/B Switch VST plugin by pongasoft (@JAMBA_ARCHIVE_ARCHITECTURE@)"
 #define stringCompanyName		"pongasoft\0"
-#define stringLegalCopyright	"© 2018-2020 pongasoft"
+#define stringLegalCopyright	"© 2018-2021 pongasoft"
 
 #ifndef NDEBUG
 #define stringPluginName "ABSwitch_Debug"
