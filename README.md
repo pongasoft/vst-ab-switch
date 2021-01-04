@@ -9,6 +9,7 @@ This project is connected to the [VST Development Notes](https://www.pongasoft.c
 ------------------------------------
 * Use of [jamba](https://github.com/pongasoft/jamba) framework and VST SDK 3.7.0
 * Use of `ParamImageView` for LED status lights
+* Added support for Audio Unit
 * Added support for Apple Chipset / universal build on macOS
 
 2018-06-19 - Status for tag `v1.1.2`

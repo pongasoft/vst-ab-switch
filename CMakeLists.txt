@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.17)
 option(JAMBA_ENABLE_VST2 "Use VST2" ON)
 
 # build Audio Unit?
-option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" OFF)
+option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
 # Download VST SDK if not installed?
 option(JAMBA_DOWNLOAD_VSTSDK "Download VST SDK if not installed" ON)
