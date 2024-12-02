@@ -5,6 +5,17 @@ This project is a VST implementation of the [A/B Audio Switch](https://pongasoft
 
 This project is connected to the [VST Development Notes](https://www.pongasoft.com/blog/yan/vst/2018/03/12/VST-development-notes) blog post series.
 
+### Unreleased - `master`
+
+* Upgraded to [Jamba](https://github.com/pongasoft/jamba) 7.1.3 / VST3 SDK 3.7.12
+* Removed support for VST2
+
+> [!NOTE]
+> This version is not released because there are no new features or bug fixes, and since
+> it removes support for VST2, it is not released at the moment.
+> `master` has been updated to the latest version of Jamba / VST3 SDK so that it compiles with
+> more recent versions of macOS / Windows.
+
 2021-01-04 - Status for tag `v1.1.3`
 ------------------------------------
 * Use of [jamba](https://github.com/pongasoft/jamba) framework and VST SDK 3.7.0

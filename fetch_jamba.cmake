@@ -1,42 +1,41 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.19)
 
 include(FetchContent)
 
+set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url")
+set(JAMBA_GIT_TAG v7.1.3 CACHE STRING "Jamba git tag")
+set(JAMBA_DOWNLOAD_URL "${JAMBA_GIT_REPO}/archive/refs/tags/v7.1.3.zip" CACHE STRING "Jamba download url")
+set(JAMBA_DOWNLOAD_URL_HASH "SHA256=c177c031afebf97e3c8ccaf70e9de09a1cfbe4d4503e45106612cceef03f3fe0" CACHE STRING "Jamba download url hash")
+
 if(JAMBA_ROOT_DIR)
-	# instructs FetchContent to not download or update but use the location instead
-	set(FETCHCONTENT_SOURCE_DIR_JAMBA ${JAMBA_ROOT_DIR})
+  message(STATUS "Using jamba from local ${JAMBA_ROOT_DIR}")
+  FetchContent_Declare(jamba
+      SOURCE_DIR    "${JAMBA_ROOT_DIR}"
+      SOURCE_SUBDIR "do_not_make_available" # invalid folder to not execute jamba/CMakeLists.txt
+  )
 else()
-	set(FETCHCONTENT_SOURCE_DIR_JAMBA "")
-endif()
-
-set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG v5.1.2 CACHE STRING "Jamba git tag" FORCE)
-
-FetchContent_Declare(jamba
-    GIT_REPOSITORY    ${JAMBA_GIT_REPO}
-    GIT_TAG           ${JAMBA_GIT_TAG}
-    GIT_CONFIG        advice.detachedHead=false
-    GIT_SHALLOW       true
-    SOURCE_DIR        "${CMAKE_BINARY_DIR}/jamba"
-    BINARY_DIR        "${CMAKE_BINARY_DIR}/jamba-build"
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND     ""
-    INSTALL_COMMAND   ""
-    TEST_COMMAND      ""
+  if(JAMBA_DOWNLOAD_URL STREQUAL "" OR JAMBA_DOWNLOAD_URL_HASH STREQUAL "")
+    message(STATUS "Fetching jamba from ${JAMBA_GIT_REPO}/tree/${JAMBA_GIT_TAG}")
+    FetchContent_Declare(jamba
+        GIT_REPOSITORY    ${JAMBA_GIT_REPO}
+        GIT_TAG           ${JAMBA_GIT_TAG}
+        GIT_CONFIG        advice.detachedHead=false
+        GIT_SHALLOW       true
+        SOURCE_DIR        "${CMAKE_BINARY_DIR}/jamba"
+        SOURCE_SUBDIR     "do_not_make_available"
     )
-
-FetchContent_GetProperties(jamba)
-
-if(NOT jamba_POPULATED)
-
-  if(FETCHCONTENT_SOURCE_DIR_JAMBA)
-    message(STATUS "Using jamba from local ${FETCHCONTENT_SOURCE_DIR_JAMBA}")
   else()
-    message(STATUS "Fetching jamba ${JAMBA_GIT_REPO}@${JAMBA_GIT_TAG}")
+    message(STATUS "Fetching jamba from ${JAMBA_DOWNLOAD_URL}")
+    FetchContent_Declare(jamba
+        URL                        "${JAMBA_DOWNLOAD_URL}"
+        URL_HASH                   "${JAMBA_DOWNLOAD_URL_HASH}"
+        DOWNLOAD_EXTRACT_TIMESTAMP true
+        SOURCE_DIR                 "${CMAKE_BINARY_DIR}/jamba"
+        SOURCE_SUBDIR              "do_not_make_available"
+    )
   endif()
-
-  FetchContent_Populate(jamba)
-
 endif()
+
+FetchContent_MakeAvailable(jamba)
 
 set(JAMBA_ROOT_DIR ${jamba_SOURCE_DIR})
